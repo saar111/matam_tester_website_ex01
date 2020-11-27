@@ -23,46 +23,48 @@ function clearStaging(req, res, next) {
     next();
 }
 
-function pullTests(cb) {
+function pullTests(isPq, cb) {
 
-    exec("wget https://raw.githubusercontent.com/saar111/MTM_EX01/main/PriorityQueue/main.c -O staging/tests_pq.c", function () {
+    if (isPq) {
+        exec("wget https://raw.githubusercontent.com/saar111/MTM_EX01/main/PriorityQueue/main.c -O staging/tests_pq.c", function () {
+        });
+    } else {
         exec("wget https://raw.githubusercontent.com/saar111/MTM_EX01/main/EventManager/main.c -O staging/tests_em.c", function () {
             cb();
         });
+    }
+
+    function compileCode(isPq, cb) {
+        pullTests(isPq, function () {
+            if (isPq) {
+                exec(GCC_COMPILE_PQ, function (error, stdout, stderr) {
+                    console.log("PQ", error, stderr);
+                    cb();
+                });
+            } else {
+                exec(GCC_COMPILE_EM, function (error, stdout, stderr) {
+                    console.log("EM");
+                    cb();
+                });
+            }
+        });
+    }
+
+
+    function runTests() {
+    }
+
+
+    router.post('/', clearStaging, upload.array('projectFiles'), function (req, res) {
+        let isPq = req.body.testType === "pq";
+        compileCode(isPq, function () {
+            runTests();
+            res.json(req.files);
+        });
     });
-}
 
-function compileCode(is_pq, cb) {
-    pullTests(function () {
-        if(is_pq) {
-            exec(GCC_COMPILE_PQ, function(error, stdout, stderr){
-                console.log("PQ", error, stderr);
-                cb();
-            });
-        } else {
-            exec(GCC_COMPILE_EM, function(error, stdout, stderr){
-                console.log("EM");
-                cb();
-            });
-        }
+    router.get('/', function (req, res, next) {
+        res.render('index');
     });
-}
 
-
-function runTests() {
-}
-
-
-router.post('/', clearStaging, upload.array('projectFiles'), function (req, res) {
-    let isPq = req.body.testType === "pq";
-    compileCode(isPq, function () {
-        runTests();
-        res.json(req.files);
-    });
-});
-
-router.get('/', function (req, res, next) {
-    res.render('index');
-});
-
-module.exports = router;
+    module.exports = router;
