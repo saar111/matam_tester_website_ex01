@@ -32,7 +32,6 @@ function pullTests(cb) {
 
 function compileCode(is_pq, cb) {
     pullTests(function () {
-        exec("")
     });
 }
 
