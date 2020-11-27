@@ -41,7 +41,10 @@ function compileCode(is_pq, cb) {
                 cb();
             });
         } else {
-            exec(GCC_COMPILE_EM, cb);
+            exec(GCC_COMPILE_EM, function(error, stdout, stderr){
+                console.log(error, stdout, stderr);
+                cb();
+            });
         }
     });
 }
