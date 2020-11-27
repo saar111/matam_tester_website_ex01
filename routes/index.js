@@ -7,7 +7,6 @@ var storage = multer.diskStorage({
         cb(null, "staging/");
     },
     filename: function (req, file, cb) {
-        console.log(file, file.originalname);
         cb(null, file.originalname);
     }
 })
@@ -55,8 +54,8 @@ function runTests() {
 
 
 router.post('/', clearStaging, upload.array('projectFiles'), function (req, res) {
-    console.log(req.query, req.query["testType"]);
-    let isPq = req.query["testType"] === "pq";
+    console.log(req.body, req.params, req.query, req.query["testType"]);
+    let isPq = req.body["testType"] === "pq";
     compileCode(isPq, function () {
         runTests();
         res.json(req.files);
