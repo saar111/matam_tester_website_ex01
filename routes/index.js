@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var multer = require('multer');
+var fsExtra = require("fs-extra");
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, "staging/");
@@ -14,9 +15,11 @@ const {exec} = require('child_process');
 
 let staging_dir = "staging"
 
-function clearStaging() {
-
+function clearStaging(req, res, next) {
+    fsExtra.emptyDirSync("staging/");
+    next();
 }
+
 
 function pullTests(cb) {
 
@@ -28,7 +31,7 @@ function pullTests(cb) {
 }
 
 function compileCode(is_pq, cb) {
-    pullTests(function(){
+    pullTests(function () {
         exec("")
     });
 }
@@ -38,17 +41,12 @@ function runTests() {
 }
 
 
-router.post('/', upload.array('projectFiles'), function (req, res) {
-    console.log(req.body. req.query, req.params);
-    clearStaging(function () {
-        saveFilesToStaging(function () {
-            compileCode(function () {
-                runTests();
-                res.json(req.files);
-            });
-        });
+router.post('/', clearStaging, upload.array('projectFiles'), function (req, res) {
+    console.log(req.body, req.query, req.params);
+    compileCode(function () {
+        runTests();
+        res.json(req.files);
     });
-
 });
 
 router.get('/', function (req, res, next) {
