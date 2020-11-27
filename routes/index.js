@@ -41,7 +41,7 @@ function compileCode(is_pq, cb) {
             });
         } else {
             exec(GCC_COMPILE_EM, function(error, stdout, stderr){
-                console.log(error, stdout, stderr);
+                console.log("EM", error, stdout, stderr);
                 cb();
             });
         }
@@ -54,8 +54,8 @@ function runTests() {
 
 
 router.post('/', clearStaging, upload.array('projectFiles'), function (req, res) {
-    console.log(req.body, req.params, req.query, req.query["testType"]);
-    let isPq = req.body["testType"] === "pq";
+    console.log(req.body, req.params, req.query, req.params["testType"]);
+    let isPq = req.params["testType"] === "pq";
     compileCode(isPq, function () {
         runTests();
         res.json(req.files);
