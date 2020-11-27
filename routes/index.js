@@ -36,7 +36,7 @@ function compileCode(is_pq, cb) {
     pullTests(function () {
         if(is_pq) {
             exec(GCC_COMPILE_PQ, function(error, stdout, stderr){
-                console.log("PQ");
+                console.log("PQ", error, stderr);
                 cb();
             });
         } else {
