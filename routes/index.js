@@ -7,8 +7,7 @@ var storage = multer.diskStorage({
         cb(null, "staging/");
     },
     filename: function (req, file, cb) {
-        console.log(file);
-        cb(null, file.filename);
+        cb(null, file.originalName);
     }
 })
 var upload = multer({storage: storage});
