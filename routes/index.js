@@ -27,7 +27,7 @@ function pullTests(isPq, cb) {
 
     if (isPq) {
         exec("wget https://raw.githubusercontent.com/saar111/MTM_EX01/PriorityQueue/PriorityQueue/main.c -O staging/tests_pq.c", function () {
-            exec("wget https://raw.githubusercontent.com/saar111/MTM_EX01/PriorityQueue/test_utilities.h -O staging/tests_pq.c", function () {
+            exec("wget https://raw.githubusercontent.com/saar111/MTM_EX01/PriorityQueue/test_utilities.h -O staging/test_utilities.h", function () {
                 cb();
             });
         });
