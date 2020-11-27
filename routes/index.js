@@ -14,13 +14,15 @@ var storage = multer.diskStorage({
 var upload = multer({storage: storage});
 const {exec} = require('child_process');
 
-let staging_dir = "staging"
+
+const GCC_COMPILE_PQ = "gcc -std=c99 -o staging/priority_queue -Wall -pedantic-errors -Werror -DNDEBUG tests/tests_pq.c staging/*.c";
+const GCC_COMPILE_EM = "gcc -std=c99 -o staging/event_manager -Wall -pedantic-errors -Werror -DNDEBUG tests/tests_em.c staging/*.c";
+
 
 function clearStaging(req, res, next) {
     fsExtra.emptyDirSync("staging/");
     next();
 }
-
 
 function pullTests(cb) {
 
@@ -33,7 +35,11 @@ function pullTests(cb) {
 
 function compileCode(is_pq, cb) {
     pullTests(function () {
-        cb();
+        if(is_pq) {
+            exec(GCC_COMPILE_PQ, cb);
+        } else {
+            exec(GCC_COMPILE_EM, cb);
+        }
     });
 }
 
