@@ -15,8 +15,8 @@ var upload = multer({storage: storage});
 const {exec} = require('child_process');
 
 
-const GCC_COMPILE_PQ = "gcc -std=c99 -o staging/priority_queue -Wall -pedantic-errors -Werror -DNDEBUG tests/tests_pq.c staging/*.c";
-const GCC_COMPILE_EM = "gcc -std=c99 -o staging/event_manager -Wall -pedantic-errors -Werror -DNDEBUG tests/tests_em.c staging/*.c";
+const GCC_COMPILE_PQ = "gcc -std=c99 -o staging/priority_queue -Wall -pedantic-errors -Werror -DNDEBUG staging/tests_pq.c staging/*.c";
+const GCC_COMPILE_EM = "gcc -std=c99 -o staging/event_manager -Wall -pedantic-errors -Werror -DNDEBUG staging/tests_em.c staging/*.c";
 
 
 function clearStaging(req, res, next) {
@@ -55,6 +55,7 @@ function runTests() {
 
 
 router.post('/', clearStaging, upload.array('projectFiles'), function (req, res) {
+    console.log(req.query, req.query["testType"]);
     let isPq = req.query["testType"] === "pq";
     compileCode(isPq, function () {
         runTests();
