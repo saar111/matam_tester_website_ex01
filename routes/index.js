@@ -33,38 +33,39 @@ function pullTests(isPq, cb) {
             cb();
         });
     }
+}
 
-    function compileCode(isPq, cb) {
-        pullTests(isPq, function () {
-            if (isPq) {
-                exec(GCC_COMPILE_PQ, function (error, stdout, stderr) {
-                    console.log("PQ", error, stderr);
-                    cb();
-                });
-            } else {
-                exec(GCC_COMPILE_EM, function (error, stdout, stderr) {
-                    console.log("EM");
-                    cb();
-                });
-            }
-        });
-    }
-
-
-    function runTests() {
-    }
-
-
-    router.post('/', clearStaging, upload.array('projectFiles'), function (req, res) {
-        let isPq = req.body.testType === "pq";
-        compileCode(isPq, function () {
-            runTests();
-            res.json(req.files);
-        });
+function compileCode(isPq, cb) {
+    pullTests(isPq, function () {
+        if (isPq) {
+            exec(GCC_COMPILE_PQ, function (error, stdout, stderr) {
+                console.log("PQ", error, stderr);
+                cb();
+            });
+        } else {
+            exec(GCC_COMPILE_EM, function (error, stdout, stderr) {
+                console.log("EM");
+                cb();
+            });
+        }
     });
+}
 
-    router.get('/', function (req, res, next) {
-        res.render('index');
+
+function runTests() {
+}
+
+
+router.post('/', clearStaging, upload.array('projectFiles'), function (req, res) {
+    let isPq = req.body.testType === "pq";
+    compileCode(isPq, function () {
+        runTests();
+        res.json(req.files);
     });
+});
 
-    module.exports = router;
+router.get('/', function (req, res, next) {
+    res.render('index');
+});
+
+module.exports = router;
