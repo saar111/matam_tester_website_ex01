@@ -43,8 +43,8 @@ function runTests() {
 
 
 router.post('/', clearStaging, upload.array('projectFiles'), function (req, res) {
-    console.log(req.body, req.query, req.params);
-    compileCode(function () {
+    let isPq = req.query["testType"] === "pq";
+    compileCode(isPq, function () {
         runTests();
         res.json(req.files);
     });
