@@ -3,10 +3,10 @@ var router = express.Router();
 var multer = require('multer');
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, '/tmp/my-uploads')
+        cb(null, "staging/");
     },
     filename: function (req, file, cb) {
-        cb(null, file.fieldname)
+        cb(null, file.fieldname);
     }
 })
 var upload = multer({storage: storage});
