@@ -7,7 +7,7 @@ var storage = multer.diskStorage({
         cb(null, "staging/");
     },
     filename: function (req, file, cb) {
-        cb(null, file.fieldname);
+        cb(null, file.filename);
     }
 })
 var upload = multer({storage: storage});
@@ -32,6 +32,7 @@ function pullTests(cb) {
 
 function compileCode(is_pq, cb) {
     pullTests(function () {
+        cb();
     });
 }
 
