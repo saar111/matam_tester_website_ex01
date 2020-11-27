@@ -26,7 +26,8 @@ function clearStaging(req, res, next) {
 function pullTests(isPq, cb) {
 
     if (isPq) {
-        exec("wget https://raw.githubusercontent.com/saar111/MTM_EX01/main/PriorityQueue/main.c -O staging/tests_pq.c", function () {
+        exec("wget https://raw.githubusercontent.com/saar111/MTM_EX01/PriorityQueue/PriorityQueue/main.c -O staging/tests_pq.c", function () {
+            cb();
         });
     } else {
         exec("wget https://raw.githubusercontent.com/saar111/MTM_EX01/main/EventManager/main.c -O staging/tests_em.c", function () {
@@ -39,7 +40,7 @@ function compileCode(isPq, cb) {
     pullTests(isPq, function () {
         if (isPq) {
             exec(GCC_COMPILE_PQ, function (error, stdout, stderr) {
-                console.log("PQ", error, stderr);
+                console.log("PQ", "ERROR:", error, "STDERR:", stderr);
                 cb();
             });
         } else {
