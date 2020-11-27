@@ -1,0 +1,109 @@
+
+> matam@0.0.0 start
+> node ./bin/www
+
+A
+[0mGET / [31m500 [0m9.126 ms - 1199[0m
+Error: Failed to lookup view "error" in views directory "/home/ubuntu/matam/views"
+    at Function.render (/home/ubuntu/matam/node_modules/express/lib/application.js:580:17)
+    at ServerResponse.render (/home/ubuntu/matam/node_modules/express/lib/response.js:1008:7)
+    at /home/ubuntu/matam/app.js:40:7
+    at Layer.handle_error (/home/ubuntu/matam/node_modules/express/lib/router/layer.js:71:5)
+    at trim_prefix (/home/ubuntu/matam/node_modules/express/lib/router/index.js:315:13)
+    at /home/ubuntu/matam/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/home/ubuntu/matam/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/ubuntu/matam/node_modules/express/lib/router/index.js:275:10)
+    at Layer.handle_error (/home/ubuntu/matam/node_modules/express/lib/router/layer.js:67:12)
+    at trim_prefix (/home/ubuntu/matam/node_modules/express/lib/router/index.js:315:13)
+[0mGET / [31m500 [0m1.700 ms - 1199[0m
+Error: Failed to lookup view "error" in views directory "/home/ubuntu/matam/views"
+    at Function.render (/home/ubuntu/matam/node_modules/express/lib/application.js:580:17)
+    at ServerResponse.render (/home/ubuntu/matam/node_modules/express/lib/response.js:1008:7)
+    at /home/ubuntu/matam/app.js:40:7
+    at Layer.handle_error (/home/ubuntu/matam/node_modules/express/lib/router/layer.js:71:5)
+    at trim_prefix (/home/ubuntu/matam/node_modules/express/lib/router/index.js:315:13)
+    at /home/ubuntu/matam/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/home/ubuntu/matam/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/ubuntu/matam/node_modules/express/lib/router/index.js:275:10)
+    at Layer.handle_error (/home/ubuntu/matam/node_modules/express/lib/router/layer.js:67:12)
+    at trim_prefix (/home/ubuntu/matam/node_modules/express/lib/router/index.js:315:13)
+[0mGET / [31m500 [0m1.285 ms - 1199[0m
+Error: Failed to lookup view "error" in views directory "/home/ubuntu/matam/views"
+    at Function.render (/home/ubuntu/matam/node_modules/express/lib/application.js:580:17)
+    at ServerResponse.render (/home/ubuntu/matam/node_modules/express/lib/response.js:1008:7)
+    at /home/ubuntu/matam/app.js:40:7
+    at Layer.handle_error (/home/ubuntu/matam/node_modules/express/lib/router/layer.js:71:5)
+    at trim_prefix (/home/ubuntu/matam/node_modules/express/lib/router/index.js:315:13)
+    at /home/ubuntu/matam/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/home/ubuntu/matam/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/ubuntu/matam/node_modules/express/lib/router/index.js:275:10)
+    at Layer.handle_error (/home/ubuntu/matam/node_modules/express/lib/router/layer.js:67:12)
+    at trim_prefix (/home/ubuntu/matam/node_modules/express/lib/router/index.js:315:13)
+[0mGET / [31m500 [0m1.258 ms - 1199[0m
+Error: Failed to lookup view "error" in views directory "/home/ubuntu/matam/views"
+    at Function.render (/home/ubuntu/matam/node_modules/express/lib/application.js:580:17)
+    at ServerResponse.render (/home/ubuntu/matam/node_modules/express/lib/response.js:1008:7)
+    at /home/ubuntu/matam/app.js:40:7
+    at Layer.handle_error (/home/ubuntu/matam/node_modules/express/lib/router/layer.js:71:5)
+    at trim_prefix (/home/ubuntu/matam/node_modules/express/lib/router/index.js:315:13)
+    at /home/ubuntu/matam/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/home/ubuntu/matam/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/ubuntu/matam/node_modules/express/lib/router/index.js:275:10)
+    at Layer.handle_error (/home/ubuntu/matam/node_modules/express/lib/router/layer.js:67:12)
+    at trim_prefix (/home/ubuntu/matam/node_modules/express/lib/router/index.js:315:13)
+[0mGET / [31m500 [0m1.243 ms - 1199[0m
+Error: Failed to lookup view "error" in views directory "/home/ubuntu/matam/views"
+    at Function.render (/home/ubuntu/matam/node_modules/express/lib/application.js:580:17)
+    at ServerResponse.render (/home/ubuntu/matam/node_modules/express/lib/response.js:1008:7)
+    at /home/ubuntu/matam/app.js:40:7
+    at Layer.handle_error (/home/ubuntu/matam/node_modules/express/lib/router/layer.js:71:5)
+    at trim_prefix (/home/ubuntu/matam/node_modules/express/lib/router/index.js:315:13)
+    at /home/ubuntu/matam/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/home/ubuntu/matam/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/ubuntu/matam/node_modules/express/lib/router/index.js:275:10)
+    at Layer.handle_error (/home/ubuntu/matam/node_modules/express/lib/router/layer.js:67:12)
+    at trim_prefix (/home/ubuntu/matam/node_modules/express/lib/router/index.js:315:13)
+[0mGET / [31m500 [0m1.203 ms - 1199[0m
+Error: Failed to lookup view "error" in views directory "/home/ubuntu/matam/views"
+    at Function.render (/home/ubuntu/matam/node_modules/express/lib/application.js:580:17)
+    at ServerResponse.render (/home/ubuntu/matam/node_modules/express/lib/response.js:1008:7)
+    at /home/ubuntu/matam/app.js:40:7
+    at Layer.handle_error (/home/ubuntu/matam/node_modules/express/lib/router/layer.js:71:5)
+    at trim_prefix (/home/ubuntu/matam/node_modules/express/lib/router/index.js:315:13)
+    at /home/ubuntu/matam/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/home/ubuntu/matam/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/ubuntu/matam/node_modules/express/lib/router/index.js:275:10)
+    at Layer.handle_error (/home/ubuntu/matam/node_modules/express/lib/router/layer.js:67:12)
+    at trim_prefix (/home/ubuntu/matam/node_modules/express/lib/router/index.js:315:13)
+[0mGET / [31m500 [0m1.209 ms - 1199[0m
+Error: Failed to lookup view "error" in views directory "/home/ubuntu/matam/views"
+    at Function.render (/home/ubuntu/matam/node_modules/express/lib/application.js:580:17)
+    at ServerResponse.render (/home/ubuntu/matam/node_modules/express/lib/response.js:1008:7)
+    at /home/ubuntu/matam/app.js:40:7
+    at Layer.handle_error (/home/ubuntu/matam/node_modules/express/lib/router/layer.js:71:5)
+    at trim_prefix (/home/ubuntu/matam/node_modules/express/lib/router/index.js:315:13)
+    at /home/ubuntu/matam/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/home/ubuntu/matam/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/ubuntu/matam/node_modules/express/lib/router/index.js:275:10)
+    at Layer.handle_error (/home/ubuntu/matam/node_modules/express/lib/router/layer.js:67:12)
+    at trim_prefix (/home/ubuntu/matam/node_modules/express/lib/router/index.js:315:13)
+[0mGET / [31m500 [0m1.230 ms - 1199[0m
+Error: Failed to lookup view "error" in views directory "/home/ubuntu/matam/views"
+    at Function.render (/home/ubuntu/matam/node_modules/express/lib/application.js:580:17)
+    at ServerResponse.render (/home/ubuntu/matam/node_modules/express/lib/response.js:1008:7)
+    at /home/ubuntu/matam/app.js:40:7
+    at Layer.handle_error (/home/ubuntu/matam/node_modules/express/lib/router/layer.js:71:5)
+    at trim_prefix (/home/ubuntu/matam/node_modules/express/lib/router/index.js:315:13)
+    at /home/ubuntu/matam/node_modules/express/lib/router/index.js:284:7
+    at Function.process_params (/home/ubuntu/matam/node_modules/express/lib/router/index.js:335:12)
+    at next (/home/ubuntu/matam/node_modules/express/lib/router/index.js:275:10)
+    at Layer.handle_error (/home/ubuntu/matam/node_modules/express/lib/router/layer.js:67:12)
+    at trim_prefix (/home/ubuntu/matam/node_modules/express/lib/router/index.js:315:13)
+Terminated
+npm ERR! code 143
+npm ERR! path /home/ubuntu/matam
+npm ERR! command failed
+npm ERR! command sh -c node ./bin/www
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /root/.npm/_logs/2020-11-27T21_31_48_734Z-debug.log
