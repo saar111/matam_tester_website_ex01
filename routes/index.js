@@ -79,23 +79,26 @@ function getTestCount() {
     return count;
 }
 
-function _runTests(testNumber, maxTestsNumber, output) {
+function _runTests(testNumber, maxTestsNumber, output, cb) {
     if (testNumber > maxTestsNumber) {
-        return;
+        cb();
     }
 
     const EXEC_TEST_NUMBER = `./staging/compiled_program ${testNumber} > staging/test_${testNumber}_output.txt`;
     console.log(EXEC_TEST_NUMBER);
     exec(EXEC_TEST_NUMBER, function (error, stdout, stderr) {
-      _runTests(testNumber + 1, maxTestsNumber, output);
+        output.push(stdout);
+        _runTests(testNumber + 1, maxTestsNumber, output, cb);
     });
 
 }
 
-function runTests() {
+function runTests(cb) {
     let testCount = getTestCount();
     let output = [];
-    _runTests(1, testCount, output);
+    _runTests(1, testCount, output, function(){
+        cb(output);
+    });
     // GET TEST COUNT FROM FILE AND RUN ALL TESTS or use the "invalid test index" error from file
 }
 
@@ -107,8 +110,9 @@ router.post('/', clearStaging, upload.array('projectFiles'), function (req, res)
             res.render("index", {error: error});
             return;
         }
-        runTests();
-        res.render("index", {error: {}});
+        runTests(function(output){
+            res.render("index", {error: {}, output: output});
+        });
     });
 });
 

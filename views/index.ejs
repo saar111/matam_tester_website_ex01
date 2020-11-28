@@ -4,12 +4,19 @@
 
 <body>
 <div>
-    <% if (error && error.toString() !== "[object Object]") {%>
+    <% if (error && error.toString() !== "[object Object]") { %>
         <%- "<h2>Compliation Error, Details:</h2>" %>
         <%- error.toString().replace(/\n/g, "<br>") %>
         <%- "<br></br></br>" %>
     <% } %>
 
+    <% if (output && output.length !== 0) { %>
+        <%- output.forEach(function(test_output){ %>
+            <%- test_output %>
+            <br/>
+            <% }); %>
+        <%- "<br></br></br>" %>
+    <% } %>
 </div>
 <form action="/" method="post" enctype="multipart/form-data">
     <input type="file" name="projectFiles" value="Project Files" multiple>
