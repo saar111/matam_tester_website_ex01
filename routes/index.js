@@ -15,9 +15,18 @@ var upload = multer({storage: storage});
 const {exec} = require('child_process');
 
 
-const GCC_COMPILE_PQ = "gcc -std=c99 -o staging/compiled_program -Wall -pedantic-errors -Werror -DNDEBUG staging/*.c";
-const GCC_COMPILE_EM = "gcc -std=c99 -o staging/compiled_program -Wall -pedantic-errors -Werror -DNDEBUG staging/*.c";
+const GCC_COMPILE_PQ = "gcc -g -std=c99 -o staging/compiled_program -Wall -pedantic-errors -Werror -DNDEBUG staging/*.c";
+const GCC_COMPILE_EM = "gcc -g -std=c99 -o staging/compiled_program -Wall -pedantic-errors -Werror -DNDEBUG staging/*.c";
 
+function makeid(length) {
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
 
 function pullFile(file, cb) {
     exec("wget --no-cache --no-cookies https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename + "?" + Math.random() + " -O staging/" + file.localname, cb);
@@ -72,11 +81,29 @@ function compileCode(isPq, cb) {
 
 function getTestCount() {
     let fileContent = fs.readFileSync("staging/tests.c");
-    var myString = "define NUMBER_TESTS 4";
     var myRegexp = /define NUMBER_TESTS (\d+)/g;
-    let match = myRegexp.exec(myString);
+    let match = myRegexp.exec(fileContent);
     let count = parseInt(match[1]);
     return count;
+}
+
+function isValgrindFailure(tempLogName) {
+    let valgrindOutput = fs.readFileSync("public/" + tempLogName);
+    var myRegexp = /ERROR SUMMARY: (\d+) errors/g;
+    let match = myRegexp.exec(valgrindOutput);
+    try {
+        var count = parseInt(match[1]);
+    } catch (err) {
+        var count = -1;
+    }
+
+    if (count >= 1) {
+        return count;
+    } else if (count === 0) {
+        return "UNKNOWN";
+    } else {
+        return "SUCCESS";
+    }
 }
 
 function _runTests(testNumber, maxTestsNumber, output, cb) {
@@ -85,11 +112,20 @@ function _runTests(testNumber, maxTestsNumber, output, cb) {
         return;
     }
 
+    let tempLogName = `valgrind-test-${testNumber}-${makeid(15)}.out.txt`;
+
     // const EXEC_TEST_NUMBER = `./staging/compiled_program ${testNumber} > staging/test_${testNumber}_output.txt`;
-    const EXEC_TEST_NUMBER = `./staging/compiled_program ${testNumber}`;
+    const EXEC_TEST_NUMBER = `valgrind --leak-check=full --show-leak-kinds=all --log-file="./public/${tempLogName}" ./staging/compiled_program ${testNumber}`;
     console.log(EXEC_TEST_NUMBER);
     exec(EXEC_TEST_NUMBER, function (error, stdout, stderr) {
-        output.push(stdout);
+        let isValgrindFailure = isValgrindFailure(tempLogName);
+        let valgrindMessage = "";
+        if (isValgrindFailure >= 1) {
+            valgrindMessage = "Valgrind has found an error (" + isValgrindFailure + " errors), check full output file";
+        } else if(isValgrindFailure === "UNKNOWN") {
+            valgrindMessage = "Valgrind status unknown, please look manually at output file";
+        }
+        output.push({testOutput: stdout, valgrindOutputPath: stderr, valgrindMessage: valgrindMessage});
         _runTests(testNumber + 1, maxTestsNumber, output, cb);
     });
 
@@ -98,7 +134,7 @@ function _runTests(testNumber, maxTestsNumber, output, cb) {
 function runTests(cb) {
     let testCount = getTestCount();
     let output = [];
-    _runTests(1, testCount, output, function(){
+    _runTests(1, testCount, output, function () {
         cb(output);
     });
     // GET TEST COUNT FROM FILE AND RUN ALL TESTS or use the "invalid test index" error from file
@@ -112,7 +148,7 @@ router.post('/', clearStaging, upload.array('projectFiles'), function (req, res)
             res.render("index", {error: error, output: []});
             return;
         }
-        runTests(function(output){
+        runTests(function (output) {
             console.log(output);
             res.render("index", {error: {}, output: output});
         });

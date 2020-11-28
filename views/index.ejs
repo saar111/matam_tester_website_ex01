@@ -22,6 +22,14 @@
         border-bottom: 1px solid grey;
         width: 450px;
     }
+
+    .valgrind-success {
+        color: green;
+    }
+
+    .valgrind-failure {
+        color: red;
+    }
 </style>
 
 <body>
@@ -33,8 +41,16 @@
     <% } %>
 
     <% if (output && output.length !== 0) { %>
-        <% output.forEach(function(test_output){ %>
-            <%- test_output.replace(/\n/g, "<br>") %>
+        <% output.forEach(function(test_info){ %>
+            <%- test_info.testOutput.replace(/\n/g, "<br>") %>
+                <% if(test_info.valgrindMessage !== "") { %>
+                    <%- '<div class="valgrind-failure">' + test_info.valgrindMessage + '</div>' %>
+                    <%- '<a href="/' + test_info.valgrindOutputPath + '">Valgrind Full Output File</a>' %>
+                <% } else { %>
+                    <%- '<div class="valgrind-success">Valgrind ran successfully (no leaks found)</div>' %>
+                <% } %>
+
+
             <%- "<div class='seperator'></div>" %>
         <% }); %>
         <%- "<br></br><hr></br>" %>
