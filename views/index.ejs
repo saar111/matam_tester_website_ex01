@@ -38,9 +38,7 @@
         <%- "<h2>Compliation Error, Details:</h2>" %>
         <%- error.toString().replace(/\n/g, "<br>") %>
         <%- "<br></br><hr></br>" %>
-    <% } %>
-
-    <% if (output && output.length !== 0) { %>
+    <% } else if (output && output.length !== 0) { %>
         <div class="test-file-header">Running test file: <a target="_blank" href="<%- testPath %>">tests.c</a></div>
         <div class="subtitle">(Use this file to debug why your code failed a certain test)</div>
         <% output.forEach(function(test_info){ %>
@@ -57,16 +55,19 @@
             <%- "<div class='seperator'></div>" %>
         <% }); %>
         <%- "<br></br><hr></br>" %>
+    <% } else { %>
+        <div>
+            <p>Notice! This website was not officially made by the Matam course, so take the tests here with a grain of salt.</p>
+            Also, make sure you know how to compile your code alone and test it by yourself,<br>
+            it will probably be more important in later assignments / might show up in the test.
+
+            Good luck!
+        </div>
     <% } %>
 </div>
 
-<div>
-    Notice! This website was not officially made by the Matam course, so take the tests here with a grain of salt.
-    Also, make sure you know how to compile your code alone and test it by yourself,
-    it will probably be more important in later assignments / might show up in the test.
-
-    Good luck!
-</div>
+<br>
+<br>
 
 <form action="/" method="post" enctype="multipart/form-data">
     <div class="form-group">
