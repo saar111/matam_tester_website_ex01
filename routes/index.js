@@ -43,13 +43,13 @@ function pullTests(isPq, cb) {
         updateFiles([{
             remotename: "PriorityQueue/main.c",
             localname: "tests.c",
-            branch: "main"
+            branch: "PriorityQueue"
         }, {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}], cb);
     } else {
         updateFiles([{
             remotename: "EventManager/main.c",
             localname: "tests.c",
-            branch: "main"
+            branch: "PriorityQueue"
         }, {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}], cb);
     }
 }
