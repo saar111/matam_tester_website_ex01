@@ -4,6 +4,7 @@
 
 <body>
 <div>
+    <%- error ? "<h2>Compliation Error, Details:</h2>" : "" %>
     <%- error.toString().replace(/\n/g, "<br>") %>
     <%- error ? "<br></br></br>" : "" %>
 </div>
@@ -11,7 +12,7 @@
     <input type="file" name="projectFiles" value="Project Files" multiple>
     <select name="testType">
         <option value="pq">Priority Queue</option>
-        <option value="em"></option>
+        <option value="em">Event Manager</option>
     </select>
     <br>
     <input type="submit" value="Upload">

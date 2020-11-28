@@ -64,6 +64,7 @@ function compileCode(isPq, cb) {
 
 
 function runTests() {
+    // GET TEST COUNT FROM FILE AND RUN ALL TESTS or use the "invalid test index" error from file
 }
 
 
