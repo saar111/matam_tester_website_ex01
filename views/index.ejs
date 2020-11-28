@@ -4,7 +4,7 @@
 
 <body>
 <div>
-    <%- error.replace(/\n/g, "<br>") %>
+    <%- error.toString().replace(/\n/g, "<br>") %>
     <%- error ? "<br></br></br>" : "" %>
 </div>
 <form action="/" method="post" enctype="multipart/form-data">
