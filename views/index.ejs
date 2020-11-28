@@ -35,15 +35,6 @@
 <form action="/" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <h3>
-            <label for="projectFiles">Upload Project Files (.c + .h)</label>
-            <div class="subtitle">(Only your files! Don't upload anything provided by the course)</div>
-        </h3>
-        <input type="file" class=form-control-file" id="projectFiles" name="projectFiles" value="Project Files"
-               multiple>
-    </div>
-    <br>
-    <div class="form-group">
-        <h3>
             <label for="testType">Part to Test</label>
             <div class="subtitle">(Only wet parts available)</div>
         </h3>
@@ -51,6 +42,15 @@
             <option value="pq">Priority Queue</option>
             <option value="em">Event Manager</option>
         </select>
+    </div>
+    <br>
+    <div class="form-group">
+        <h3>
+            <label for="projectFiles">Upload Project Files (.c + .h)</label>
+            <div class="subtitle">(Only your files! Don't upload anything provided by the course)</div>
+        </h3>
+        <input type="file" class=form-control-file" id="projectFiles" name="projectFiles" value="Project Files"
+               multiple>
     </div>
     <br>
     <input type="submit" class="btn btn-primary" value="Run Tests!">
