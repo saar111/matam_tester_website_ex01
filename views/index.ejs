@@ -47,7 +47,7 @@
 
     .test-file-header {
         border: 2px solid #50b761;
-        padding: 4px 12px 7px 12px;
+        padding: 8px 16px 11px 16px;
     }
 
 </style>
@@ -63,7 +63,7 @@
             <h2 class="test-file-header">Running test file: <a target="_blank" href="<%- testPath %>">tests.c</a>
                 <div class="subtitle">(Use this file to understand why your code failed a certain test)</div>
             </h2>
-            <br>
+            <br> <br>
 
             <% output.forEach(function(test_info){ %>
                 <%- test_info.testOutput.replace(/\n/g, "<br>") %>
