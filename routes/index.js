@@ -51,12 +51,12 @@ function compileCode(isPq, cb) {
         if (isPq) {
             exec(GCC_COMPILE_PQ, function (error, stdout, stderr) {
                 console.log("PQ", "ERROR:", error, "STDERR:", stderr);
-                cb();
+                cb(error, stdout, stderr);
             });
         } else {
             exec(GCC_COMPILE_EM, function (error, stdout, stderr) {
                 console.log("EM");
-                cb();
+                cb(error, stdout, stderr);
             });
         }
     });
@@ -69,7 +69,11 @@ function runTests() {
 
 router.post('/', clearStaging, upload.array('projectFiles'), function (req, res) {
     let isPq = req.body.testType === "pq";
-    compileCode(isPq, function () {
+    compileCode(isPq, function (error, stdout, stderr) {
+        if(error) {
+            res.render("index", {error: error});
+            return;
+        }
         runTests();
         res.render("index", {errors: {}});
     });
