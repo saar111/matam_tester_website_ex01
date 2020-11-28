@@ -61,9 +61,9 @@
             <%- "<br></br><hr></br>" %>
         <% } else if (output && output.length !== 0) { %>
             <h2 class="test-file-header">Running test file: <a target="_blank" href="<%- testPath %>">tests.c</a>
-                <div class="subtitle">(Use this file to debug why your code failed a certain test)</div>
-                <br>
+                <div class="subtitle">(Use this file to understand why your code failed a certain test)</div>
             </h2>
+            <br>
 
             <% output.forEach(function(test_info){ %>
                 <%- test_info.testOutput.replace(/\n/g, "<br>") %>
@@ -82,8 +82,7 @@
         <% } else { %>
             <div class="notice-start-header">
                 <p>Notice! This website was not officially made by the Matam course, so take the tests here with a grain
-                    of
-                    salt.</p>
+                    of salt.</p>
                 Also, make sure you know how to compile your code alone and test it by yourself,<br>
                 it will probably be more important in later assignments / might show up in the test.
 
