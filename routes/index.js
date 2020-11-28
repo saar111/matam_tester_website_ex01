@@ -27,7 +27,7 @@ function updateFiles(files, cb) {
     if (files.length === 0) {
         return cb();
     }
-    pullFile(file[0], function () {
+    pullFile(files[0], function () {
         files.splice(0, 1);
         updateFiles(files);
     })
