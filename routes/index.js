@@ -17,10 +17,9 @@ const {exec} = require('child_process');
 const GCC_COMPILE_PQ = "gcc -std=c99 -o staging/priority_queue -Wall -pedantic-errors -Werror -DNDEBUG staging/*.c";
 const GCC_COMPILE_EM = "gcc -std=c99 -o staging/event_manager -Wall -pedantic-errors -Werror -DNDEBUG staging/*.c";
 
-const BRANCH = "PriorityQueue";
 
 function pullFile(file, cb) {
-    exec("wget https://raw.githubusercontent.com/saar111/MTM_EX01/" + BRANCH + "/" + file.remotename + " -O staging/" + file.localname, cb);
+    exec("wget https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename + " -O staging/" + file.localname, cb);
 }
 
 function updateFiles(files, cb) {
@@ -40,9 +39,9 @@ function clearStaging(req, res, next) {
 
 function pullTests(isPq, cb) {
     if (isPq) {
-        updateFiles([{remotename: "PriorityQueue/main.c", localname: "tests_pq.c"}, {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h"}], cb);
+        updateFiles([{remotename: "PriorityQueue/main.c", localname: "tests_pq.c", branch: "PriorityQueue"}, {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}], cb);
     } else {
-        updateFiles([{remotename: "EventManager/main.c", localname: "tests_pq.c"}, {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h"}], cb);
+        updateFiles([{remotename: "EventManager/main.c", localname: "tests_pq.c", branch: "PriorityQueue"}, {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}], cb);
     }
 }
 
@@ -76,7 +75,7 @@ router.post('/', clearStaging, upload.array('projectFiles'), function (req, res)
             return;
         }
         runTests();
-        res.render("index", {error: null});
+        res.render("index", {error: {}});
     });
 });
 
