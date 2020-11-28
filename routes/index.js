@@ -71,7 +71,7 @@ function compileCode(isPq, cb) {
 }
 
 function getTestCount() {
-    let fileContent = fs.readFileSync("/staging/tests.c");
+    let fileContent = fs.readFileSync("staging/tests.c");
     var myString = "define NUMBER_TESTS 4";
     var myRegexp = /define NUMBER_TESTS (\d+)/g;
     let match = myRegexp.exec(myString);
