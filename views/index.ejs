@@ -26,7 +26,7 @@
 
     <% if (output && output.length !== 0) { %>
         <% output.forEach(function(test_output){ %>
-            <%- test_output %>
+            <%- test_output.replace(/\n/g, "<br>") %>
             <%- "<br />" %>
         <% }); %>
         <%- "<br></br><hr></br>" %>
