@@ -47,18 +47,20 @@ function clearStaging(req, res, next) {
     next();
 }
 
-const PQ_FILES = [
+// REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
+var PQ_FILES = [
     {remotename: "PriorityQueue/main.c", localname: "tests.c", branch: "PriorityQueue"},
     {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}
 ];
 
-const EM_FILES = [
+var EM_FILES = [
     {remotename: "EventManager/main.c", localname: "tests.c", branch: "PriorityQueue"},
     {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}
 ];
 
 function pullTests(isPq, cb) {
     if (isPq) {
+        console.log("SECOND", PQ_FILES);
         updateFiles(PQ_FILES, cb);
     } else {
         updateFiles(EM_FILES, cb);
@@ -142,6 +144,15 @@ function runTests(cb) {
 
 
 router.post('/', clearStaging, upload.array('projectFiles'), function (req, res) {
+    var PQ_FILES = [
+        {remotename: "PriorityQueue/main.c", localname: "tests.c", branch: "PriorityQueue"},
+        {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}
+    ];
+
+    var EM_FILES = [
+        {remotename: "EventManager/main.c", localname: "tests.c", branch: "PriorityQueue"},
+        {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}
+    ];
     let isPq = req.body.testType === "pq";
     compileCode(isPq, function (error, stdout, stderr) {
         if (error) {
