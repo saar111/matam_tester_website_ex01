@@ -1,5 +1,8 @@
 <html>
 <head>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 
 <body>
@@ -12,18 +15,24 @@
 
     <% if (output && output.length !== 0) { %>
         <% output.forEach(function(test_output){ %>
-            <%- test_output + "A" %>
+            <%- test_output %>
             <%- "<br />" %>
         <% }); %>
         <%- "<br></br></br>" %>
     <% } %>
 </div>
 <form action="/" method="post" enctype="multipart/form-data">
-    <input type="file" name="projectFiles" value="Project Files" multiple>
-    <select name="testType">
-        <option value="pq">Priority Queue</option>
-        <option value="em">Event Manager</option>
-    </select>
+    <div class="form-group">
+        <label for="projectFiles">Upload project files (.c + .h)</label>
+        <input type="file" class=form-control" id="projectFiles" name="projectFiles" value="Project Files" multiple>
+    </div>
+    <div class="form-group">
+        <label for="testType"> Part to test:</label>
+        <select name="testType" class="form-control" id="testType">
+            <option value="pq">Priority Queue</option>
+            <option value="em">Event Manager</option>
+        </select>
+    </div>
     <br>
     <input type="submit" value="Upload">
 </form>
