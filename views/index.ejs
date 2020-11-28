@@ -4,13 +4,18 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
+<style>
+    body {
+        padding: 15px;
+    }
+</style>
 
 <body>
 <div>
     <% if (error && error.toString() !== "[object Object]") { %>
         <%- "<h2>Compliation Error, Details:</h2>" %>
         <%- error.toString().replace(/\n/g, "<br>") %>
-        <%- "<br></br></br>" %>
+        <%- "<br></br><hr></br>" %>
     <% } %>
 
     <% if (output && output.length !== 0) { %>
@@ -18,13 +23,14 @@
             <%- test_output %>
             <%- "<br />" %>
         <% }); %>
-        <%- "<br></br></br>" %>
+        <%- "<br></br><hr></br>" %>
     <% } %>
 </div>
 <form action="/" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label for="projectFiles">Upload project files (.c + .h)</label>
-        <input type="file" class=form-control" id="projectFiles" name="projectFiles" value="Project Files" multiple>
+        <input type="file" class=form-control-file" id="projectFiles" name="projectFiles" value="Project Files"
+               multiple>
     </div>
     <div class="form-group">
         <label for="testType"> Part to test:</label>
@@ -34,7 +40,7 @@
         </select>
     </div>
     <br>
-    <input type="submit" value="Upload">
+    <input type="submit" class="btn btn-primary" value="Upload">
 </form>
 </body>
 
