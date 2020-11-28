@@ -43,12 +43,13 @@
     <% if (output && output.length !== 0) { %>
         <% output.forEach(function(test_info){ %>
             <%- test_info.testOutput.replace(/\n/g, "<br>") %>
-                <% if(test_info.valgrindMessage !== "") { %>
-                    <%- '<div class="valgrind-failure">' + test_info.valgrindMessage + '</div>' %>
-                    <%- '<a href="/' + test_info.valgrindOutputPath + '">Valgrind Full Output File</a>' %>
-                <% } else { %>
-                    <%- '<div class="valgrind-success">Valgrind ran successfully (no leaks found)</div>' %>
-                <% } %>
+            <br>
+            <% if(test_info.valgrindMessage !== "") { %>
+                <%- '<div class="valgrind-failure">' + test_info.valgrindMessage + '</div>' %>
+                <%- '<a href="/' + test_info.valgrindOutputPath + '">valgrind_full.txt</a>' %>
+            <% } else { %>
+                <%- '<div class="valgrind-success">Valgrind ran successfully (no leaks found)</div>' %>
+            <% } %>
 
 
             <%- "<div class='seperator'></div>" %>

@@ -100,9 +100,9 @@ function isValgrindFailure(tempLogName) {
     if (count >= 1) {
         return count;
     } else if (count === 0) {
-        return "UNKNOWN";
-    } else {
         return "SUCCESS";
+    } else {
+        return "UNKNOWN";
     }
 }
 
@@ -124,7 +124,7 @@ function _runTests(testNumber, maxTestsNumber, output, cb) {
         } else if(isValgrindFailureResult === "UNKNOWN") {
             valgrindMessage = "Valgrind status unknown, please look manually at output file";
         }
-        output.push({testOutput: stdout, valgrindOutputPath: stderr, valgrindMessage: valgrindMessage});
+        output.push({testOutput: stdout, valgrindOutputPath: "/public/" + tempLogName, valgrindMessage: valgrindMessage});
         _runTests(testNumber + 1, maxTestsNumber, output, cb);
     });
 
