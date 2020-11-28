@@ -30,69 +30,88 @@
     .valgrind-failure {
         color: red;
     }
+
+    .notice-start-header {
+        background: #484848;
+        display: inline-block;
+        color: white;
+        padding: 13px 12px;
+    }
+
+    .my-container {
+        display: inline-block;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
 </style>
 
 <body>
-<div>
-    <% if (error && error.toString() !== "[object Object]") { %>
-        <%- "<h2>Compliation Error, Details:</h2>" %>
-        <%- error.toString().replace(/\n/g, "<br>") %>
-        <%- "<br></br><hr></br>" %>
-    <% } else if (output && output.length !== 0) { %>
-        <div class="test-file-header">Running test file: <a target="_blank" href="<%- testPath %>">tests.c</a></div>
-        <div class="subtitle">(Use this file to debug why your code failed a certain test)</div>
-        <% output.forEach(function(test_info){ %>
-            <%- test_info.testOutput.replace(/\n/g, "<br>") %>
-            <br>
-            <% if(test_info.valgrindMessage !== "") { %>
-                <%- '<div class="valgrind-failure">' + test_info.valgrindMessage + '</div>' %>
-                <%- '<a target="_blank" href="' + test_info.valgrindOutputPath + '">full_valgrind_output.txt</a>' %>
-            <% } else { %>
-                <%- '<div class="valgrind-success">Valgrind ran successfully (no leaks found)</div>' %>
-            <% } %>
+<div class="my-container">
+    <div>
+        <% if (error && error.toString() !== "[object Object]") { %>
+            <%- "<h2>Compliation Error, Details:</h2>" %>
+            <%- error.toString().replace(/\n/g, "<br>") %>
+            <%- "<br></br><hr></br>" %>
+        <% } else if (output && output.length !== 0) { %>
+            <div class="test-file-header">Running test file: <a target="_blank" href="<%- testPath %>">tests.c</a></div>
+            <div class="subtitle">(Use this file to debug why your code failed a certain test)</div>
+            <% output.forEach(function(test_info){ %>
+                <%- test_info.testOutput.replace(/\n/g, "<br>") %>
+                <br>
+                <% if(test_info.valgrindMessage !== "") { %>
+                    <%- '<div class="valgrind-failure">' + test_info.valgrindMessage + '</div>' %>
+                    <%- '<a target="_blank" href="' + test_info.valgrindOutputPath + '">full_valgrind_output.txt</a>' %>
+                <% } else { %>
+                    <%- '<div class="valgrind-success">Valgrind ran successfully (no leaks found)</div>' %>
+                <% } %>
 
 
-            <%- "<div class='seperator'></div>" %>
-        <% }); %>
-        <%- "<br></br><hr></br>" %>
-    <% } else { %>
-        <div>
-            <p>Notice! This website was not officially made by the Matam course, so take the tests here with a grain of salt.</p>
-            Also, make sure you know how to compile your code alone and test it by yourself,<br>
-            it will probably be more important in later assignments / might show up in the test.
+                <%- "<div class='seperator'></div>" %>
+            <% }); %>
+            <%- "<br></br><hr></br>" %>
+        <% } else { %>
+            <div class="notice-start-header">
+                <p>Notice! This website was not officially made by the Matam course, so take the tests here with a grain
+                    of
+                    salt.</p>
+                Also, make sure you know how to compile your code alone and test it by yourself,<br>
+                it will probably be more important in later assignments / might show up in the test.
 
-            Good luck!
+                Good luck!
+            </div>
+        <% } %>
+    </div>
+
+    <br>
+    <br>
+
+    <form action="/" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <h3>
+                <label for="testType">Part to Test</label>
+                <div class="subtitle">(Only wet parts available)</div>
+            </h3>
+            <select name="testType" style="width: 330px;" class="form-control col-5" id="testType">
+                <option value="pq" selected="selected">Priority Queue</option>
+                <option value="em">Event Manager</option>
+            </select>
         </div>
-    <% } %>
+        <br>
+        <div class="form-group">
+            <h3>
+                <label for="projectFiles">Upload Project Files (.c + .h)</label>
+                <div class="subtitle">(Only your files! Don't upload anything provided by the course)</div>
+            </h3>
+            <input type="file" class=form-control-file" id="projectFiles" name="projectFiles" value="Project Files"
+                   multiple>
+        </div>
+        <br>
+        <br>
+        <input type="submit" class="btn btn-primary" value="Run Tests!">
+    </form>
 </div>
-
-<br>
-<br>
-
-<form action="/" method="post" enctype="multipart/form-data">
-    <div class="form-group">
-        <h3>
-            <label for="testType">Part to Test</label>
-            <div class="subtitle">(Only wet parts available)</div>
-        </h3>
-        <select name="testType" style="width: 330px;" class="form-control col-5" id="testType">
-            <option value="pq" selected="selected">Priority Queue</option>
-            <option value="em">Event Manager</option>
-        </select>
-    </div>
-    <br>
-    <div class="form-group">
-        <h3>
-            <label for="projectFiles">Upload Project Files (.c + .h)</label>
-            <div class="subtitle">(Only your files! Don't upload anything provided by the course)</div>
-        </h3>
-        <input type="file" class=form-control-file" id="projectFiles" name="projectFiles" value="Project Files"
-               multiple>
-    </div>
-    <br>
-    <br>
-    <input type="submit" class="btn btn-primary" value="Run Tests!">
-</form>
 </body>
 
 </html>
