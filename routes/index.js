@@ -163,7 +163,6 @@ router.post('/', clearStaging, upload.array('projectFiles'), function (req, res)
             var testPath;
             if(isPq) {
                 let file = PQ_FILES[0];
-                console.log(file, PQ_FILES);
                 testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
             } else {
                 let file = EM_FILES[0];

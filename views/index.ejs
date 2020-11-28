@@ -41,13 +41,14 @@
     <% } %>
 
     <% if (output && output.length !== 0) { %>
-        <div>Running test file: <a href="<%- testPath %>">tests.c</a></div>
+        <div class="test-file-header">Running test file: <a target="_blank" href="<%- testPath %>">tests.c</a></div>
+        <div class="subtitle">(Use this file to debug why your code failed a certain test)</div>
         <% output.forEach(function(test_info){ %>
             <%- test_info.testOutput.replace(/\n/g, "<br>") %>
             <br>
             <% if(test_info.valgrindMessage !== "") { %>
                 <%- '<div class="valgrind-failure">' + test_info.valgrindMessage + '</div>' %>
-                <%- '<a target="_blank" href="/' + test_info.valgrindOutputPath + '">full_valgrind_output.txt</a>' %>
+                <%- '<a target="_blank" href="' + test_info.valgrindOutputPath + '">full_valgrind_output.txt</a>' %>
             <% } else { %>
                 <%- '<div class="valgrind-success">Valgrind ran successfully (no leaks found)</div>' %>
             <% } %>
@@ -58,6 +59,15 @@
         <%- "<br></br><hr></br>" %>
     <% } %>
 </div>
+
+<div>
+    Notice! This website was not officially made by the Matam course, so take the tests here with a grain of salt.
+    Also, make sure you know how to compile your code alone and test it by yourself,
+    it will probably be more important in later assignments / might show up in the test.
+
+    Good luck!
+</div>
+
 <form action="/" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <h3>
