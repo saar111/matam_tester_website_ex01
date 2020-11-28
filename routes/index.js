@@ -76,7 +76,7 @@ router.post('/', clearStaging, upload.array('projectFiles'), function (req, res)
             return;
         }
         runTests();
-        res.render("index", {errors: {}});
+        res.render("index", {error: {}});
     });
 });
 
