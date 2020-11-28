@@ -10,10 +10,18 @@
     }
 
     .subtitle {
-    font-weight: 400;
-    font-size: 50%;
-    color: grey;
-}
+        font-weight: 400;
+        font-size: 50%;
+        color: grey;
+    }
+
+    .seperator {
+        position: relative;
+        display: block;
+        margin: 10px 0;
+        border-bottom: 1px solid grey;
+        width: 50%;
+    }
 </style>
 
 <body>
@@ -27,7 +35,7 @@
     <% if (output && output.length !== 0) { %>
         <% output.forEach(function(test_output){ %>
             <%- test_output.replace(/\n/g, "<br>") %>
-            <%- "<br />" %>
+            <%- "<div class='seperator'></div>" %>
         <% }); %>
         <%- "<br></br><hr></br>" %>
     <% } %>
