@@ -120,7 +120,7 @@ router.post('/', clearStaging, upload.array('projectFiles'), function (req, res)
 });
 
 router.get('/', function (req, res, next) {
-    res.render('index', {error: {}});
+    res.render('index', {error: {}, output: []});
 });
 
 module.exports = router;
