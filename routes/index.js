@@ -43,13 +43,13 @@ function pullTests(isPq, cb) {
         updateFiles([{
             remotename: "PriorityQueue/main.c",
             localname: "tests.c",
-            branch: "PriorityQueue"
+            branch: "main"
         }, {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}], cb);
     } else {
         updateFiles([{
             remotename: "EventManager/main.c",
             localname: "tests.c",
-            branch: "PriorityQueue"
+            branch: "main"
         }, {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}], cb);
     }
 }
@@ -84,7 +84,8 @@ function _runTests(testNumber, maxTestsNumber, output) {
         return;
     }
 
-    const EXEC_TEST_NUMBER = `./staging/compiled_program ${testNumber} > test_${testNumber}_output.txt`;
+    const EXEC_TEST_NUMBER = `./staging/compiled_program ${testNumber} > staging/test_${testNumber}_output.txt`;
+    console.log(EXEC_TEST_NUMBER);
     exec(EXEC_TEST_NUMBER, function (error, stdout, stderr) {
       _runTests(testNumber + 1, maxTestsNumber, output);
     });
