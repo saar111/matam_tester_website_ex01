@@ -45,6 +45,11 @@
         transform: translateX(-50%);
     }
 
+    .test-file-header {
+        border: 2px solid #50b761;
+        padding: 4px 12px 7px 12px;
+    }
+
 </style>
 
 <body>
@@ -55,8 +60,11 @@
             <%- error.toString().replace(/\n/g, "<br>") %>
             <%- "<br></br><hr></br>" %>
         <% } else if (output && output.length !== 0) { %>
-            <div class="test-file-header">Running test file: <a target="_blank" href="<%- testPath %>">tests.c</a></div>
-            <div class="subtitle">(Use this file to debug why your code failed a certain test)</div>
+            <h2 class="test-file-header">Running test file: <a target="_blank" href="<%- testPath %>">tests.c</a>
+                <div class="subtitle">(Use this file to debug why your code failed a certain test)</div>
+                <br>
+            </h2>
+
             <% output.forEach(function(test_info){ %>
                 <%- test_info.testOutput.replace(/\n/g, "<br>") %>
                 <br>
@@ -79,6 +87,7 @@
                 Also, make sure you know how to compile your code alone and test it by yourself,<br>
                 it will probably be more important in later assignments / might show up in the test.
 
+                <br><br>
                 Good luck!
             </div>
         <% } %>
