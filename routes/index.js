@@ -47,19 +47,21 @@ function clearStaging(req, res, next) {
     next();
 }
 
+const PQ_FILES = [
+    {remotename: "PriorityQueue/main.c", localname: "tests.c", branch: "PriorityQueue"},
+    {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}
+];
+
+const EM_FILES = [
+    {remotename: "EventManager/main.c", localname: "tests.c", branch: "PriorityQueue"},
+    {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}
+];
+
 function pullTests(isPq, cb) {
     if (isPq) {
-        updateFiles([{
-            remotename: "PriorityQueue/main.c",
-            localname: "tests.c",
-            branch: "PriorityQueue"
-        }, {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}], cb);
+        updateFiles(PQ_FILES, cb);
     } else {
-        updateFiles([{
-            remotename: "EventManager/main.c",
-            localname: "tests.c",
-            branch: "PriorityQueue"
-        }, {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}], cb);
+        updateFiles(EM_FILES, cb);
     }
 }
 
@@ -120,11 +122,11 @@ function _runTests(testNumber, maxTestsNumber, output, cb) {
         let isValgrindFailureResult = isValgrindFailure(tempLogName);
         let valgrindMessage = "";
         if (isValgrindFailureResult >= 1) {
-            valgrindMessage = "Valgrind has found an error (" + isValgrindFailureResult + " errors), check full output file";
-        } else if(isValgrindFailureResult === "UNKNOWN") {
+            valgrindMessage = "Valgrind has found " + isValgrindFailureResult + " errors), check full output file";
+        } else if (isValgrindFailureResult === "UNKNOWN") {
             valgrindMessage = "Valgrind status unknown, please look manually at output file";
         }
-        output.push({testOutput: stdout, valgrindOutputPath: "/public/" + tempLogName, valgrindMessage: valgrindMessage});
+        output.push({testOutput: stdout, valgrindOutputPath: "/" + tempLogName, valgrindMessage: valgrindMessage});
         _runTests(testNumber + 1, maxTestsNumber, output, cb);
     });
 
@@ -136,7 +138,6 @@ function runTests(cb) {
     _runTests(1, testCount, output, function () {
         cb(output);
     });
-    // GET TEST COUNT FROM FILE AND RUN ALL TESTS or use the "invalid test index" error from file
 }
 
 
@@ -144,18 +145,25 @@ router.post('/', clearStaging, upload.array('projectFiles'), function (req, res)
     let isPq = req.body.testType === "pq";
     compileCode(isPq, function (error, stdout, stderr) {
         if (error) {
-            res.render("index", {error: error, output: []});
+            res.render("index", {error: error, output: [], testPath: ""});
             return;
         }
         runTests(function (output) {
-            console.log(output);
-            res.render("index", {error: {}, output: output});
+            var testPath;
+            if(isPq) {
+                let file = PQ_FILES[0];
+                testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
+            } else {
+                let file = EM_FILES[0];
+                testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
+            }
+            res.render("index", {error: {}, output: output, testPath: testPath});
         });
     });
 });
 
 router.get('/', function (req, res, next) {
-    res.render('index', {error: {}, output: []});
+    res.render('index', {error: {}, output: [], testPath: ""});
 });
 
 module.exports = router;
