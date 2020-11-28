@@ -82,9 +82,11 @@ function getTestCount() {
 function _runTests(testNumber, maxTestsNumber, output, cb) {
     if (testNumber > maxTestsNumber) {
         cb();
+        return;
     }
 
-    const EXEC_TEST_NUMBER = `./staging/compiled_program ${testNumber} > staging/test_${testNumber}_output.txt`;
+    // const EXEC_TEST_NUMBER = `./staging/compiled_program ${testNumber} > staging/test_${testNumber}_output.txt`;
+    const EXEC_TEST_NUMBER = `./staging/compiled_program ${testNumber}`;
     console.log(EXEC_TEST_NUMBER);
     exec(EXEC_TEST_NUMBER, function (error, stdout, stderr) {
         output.push(stdout);
