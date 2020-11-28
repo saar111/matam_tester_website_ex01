@@ -20,7 +20,7 @@ const GCC_COMPILE_EM = "gcc -std=c99 -o staging/compiled_program -Wall -pedantic
 
 
 function pullFile(file, cb) {
-    exec("wget https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename + " -O staging/" + file.localname, cb);
+    exec("wget --no-cache --no-cookies https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename + " -O staging/" + file.localname, cb);
 }
 
 function updateFiles(files, cb) {
