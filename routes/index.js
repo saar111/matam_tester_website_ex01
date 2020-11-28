@@ -29,7 +29,7 @@ function updateFiles(files, cb) {
     }
     pullFile(files[0], function () {
         files.splice(0, 1);
-        updateFiles(files);
+        updateFiles(files, cb);
     })
 }
 
@@ -39,7 +39,6 @@ function clearStaging(req, res, next) {
 }
 
 function pullTests(isPq, cb) {
-
     if (isPq) {
         updateFiles([{remotename: "PriorityQueue/main.c", localname: "tests_pq.c"}, {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h"}], cb);
     } else {
