@@ -116,13 +116,12 @@ function _runTests(testNumber, maxTestsNumber, output, cb) {
 
     // const EXEC_TEST_NUMBER = `./staging/compiled_program ${testNumber} > staging/test_${testNumber}_output.txt`;
     const EXEC_TEST_NUMBER = `valgrind --leak-check=full --show-leak-kinds=all --log-file="./public/${tempLogName}" ./staging/compiled_program ${testNumber}`;
-    console.log(EXEC_TEST_NUMBER);
     exec(EXEC_TEST_NUMBER, function (error, stdout, stderr) {
-        let isValgrindFailure = isValgrindFailure(tempLogName);
+        let isValgrindFailureResult = isValgrindFailure(tempLogName);
         let valgrindMessage = "";
-        if (isValgrindFailure >= 1) {
-            valgrindMessage = "Valgrind has found an error (" + isValgrindFailure + " errors), check full output file";
-        } else if(isValgrindFailure === "UNKNOWN") {
+        if (isValgrindFailureResult >= 1) {
+            valgrindMessage = "Valgrind has found an error (" + isValgrindFailureResult + " errors), check full output file";
+        } else if(isValgrindFailureResult === "UNKNOWN") {
             valgrindMessage = "Valgrind status unknown, please look manually at output file";
         }
         output.push({testOutput: stdout, valgrindOutputPath: stderr, valgrindMessage: valgrindMessage});
