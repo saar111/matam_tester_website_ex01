@@ -17,6 +17,21 @@ const {exec} = require('child_process');
 const GCC_COMPILE_PQ = "gcc -std=c99 -o staging/priority_queue -Wall -pedantic-errors -Werror -DNDEBUG staging/*.c";
 const GCC_COMPILE_EM = "gcc -std=c99 -o staging/event_manager -Wall -pedantic-errors -Werror -DNDEBUG staging/*.c";
 
+const BRANCH = "PriorityQueue";
+
+function pullFile(file, cb) {
+    exec("wget https://raw.githubusercontent.com/saar111/MTM_EX01/" + BRANCH + "/" + file.remotename + " -O staging/" + file.localname, cb);
+}
+
+function updateFiles(files, cb) {
+    if (files.length === 0) {
+        return cb();
+    }
+    pullFile(file[0], function () {
+        files.splice(0, 1);
+        updateFiles(files);
+    })
+}
 
 function clearStaging(req, res, next) {
     fsExtra.emptyDirSync("staging/");
@@ -26,15 +41,9 @@ function clearStaging(req, res, next) {
 function pullTests(isPq, cb) {
 
     if (isPq) {
-        exec("wget https://raw.githubusercontent.com/saar111/MTM_EX01/PriorityQueue/PriorityQueue/main.c -O staging/tests_pq.c", function () {
-            exec("wget https://raw.githubusercontent.com/saar111/MTM_EX01/PriorityQueue/PriorityQueue/test_utilities.h -O staging/test_utilities.h", function () {
-                cb();
-            });
-        });
+        updateFiles([{remotename: "PriorityQueue/main.c", localname: "tests_pq.c"}, {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h"}], cb);
     } else {
-        exec("wget https://raw.githubusercontent.com/saar111/MTM_EX01/main/EventManager/main.c -O staging/tests_em.c", function () {
-            cb();
-        });
+        updateFiles([{remotename: "EventManager/main.c", localname: "tests_pq.c"}, {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h"}], cb);
     }
 }
 
@@ -63,7 +72,7 @@ router.post('/', clearStaging, upload.array('projectFiles'), function (req, res)
     let isPq = req.body.testType === "pq";
     compileCode(isPq, function () {
         runTests();
-        res.json(req.files);
+        res.render("index", {errors: {}});
     });
 });
 
