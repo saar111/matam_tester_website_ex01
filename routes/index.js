@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var multer = require('multer');
 var fsExtra = require("fs-extra");
+var fs = require("fs");
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, "staging/");
@@ -14,8 +15,8 @@ var upload = multer({storage: storage});
 const {exec} = require('child_process');
 
 
-const GCC_COMPILE_PQ = "gcc -std=c99 -o staging/priority_queue -Wall -pedantic-errors -Werror -DNDEBUG staging/*.c";
-const GCC_COMPILE_EM = "gcc -std=c99 -o staging/event_manager -Wall -pedantic-errors -Werror -DNDEBUG staging/*.c";
+const GCC_COMPILE_PQ = "gcc -std=c99 -o staging/compiled_program -Wall -pedantic-errors -Werror -DNDEBUG staging/*.c";
+const GCC_COMPILE_EM = "gcc -std=c99 -o staging/compiled_program -Wall -pedantic-errors -Werror -DNDEBUG staging/*.c";
 
 
 function pullFile(file, cb) {
@@ -39,9 +40,17 @@ function clearStaging(req, res, next) {
 
 function pullTests(isPq, cb) {
     if (isPq) {
-        updateFiles([{remotename: "PriorityQueue/main.c", localname: "tests_pq.c", branch: "PriorityQueue"}, {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}], cb);
+        updateFiles([{
+            remotename: "PriorityQueue/main.c",
+            localname: "tests.c",
+            branch: "PriorityQueue"
+        }, {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}], cb);
     } else {
-        updateFiles([{remotename: "EventManager/main.c", localname: "tests_pq.c", branch: "PriorityQueue"}, {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}], cb);
+        updateFiles([{
+            remotename: "EventManager/main.c",
+            localname: "tests.c",
+            branch: "PriorityQueue"
+        }, {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}], cb);
     }
 }
 
@@ -61,8 +70,31 @@ function compileCode(isPq, cb) {
     });
 }
 
+function getTestCount() {
+    let fileContent = fs.readFileSync("/staging/tests.c");
+    var myString = "define NUMBER_TESTS 4";
+    var myRegexp = /define NUMBER_TESTS (\d+)/g;
+    let match = myRegexp.exec(myString);
+    let count = parseInt(match[1]);
+    return count;
+}
+
+function _runTests(testNumber, maxTestsNumber, output) {
+    if (testNumber > maxTestsNumber) {
+        return;
+    }
+
+    const EXEC_TEST_NUMBER = `./staging/compiled_program ${testNumber} > test_${testNumber}_output.txt`;
+    exec(EXEC_TEST_NUMBER, function (error, stdout, stderr) {
+      _runTests(testNumber + 1, maxTestsNumber, output);
+    });
+
+}
 
 function runTests() {
+    let testCount = getTestCount();
+    let output = [];
+    _runTests(1, testCount, output);
     // GET TEST COUNT FROM FILE AND RUN ALL TESTS or use the "invalid test index" error from file
 }
 
@@ -70,7 +102,7 @@ function runTests() {
 router.post('/', clearStaging, upload.array('projectFiles'), function (req, res) {
     let isPq = req.body.testType === "pq";
     compileCode(isPq, function (error, stdout, stderr) {
-        if(error) {
+        if (error) {
             res.render("index", {error: error});
             return;
         }
