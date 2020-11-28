@@ -103,11 +103,13 @@ router.post('/', clearStaging, upload.array('projectFiles'), function (req, res)
     let isPq = req.body.testType === "pq";
     compileCode(isPq, function (error, stdout, stderr) {
         if (error) {
-            res.render("index", {error: ""});
+            console.log("1");
+            res.render("index", {error: error});
             return;
         }
+        console.log("2");
         runTests();
-        res.render("index", {error: ""});
+        res.render("index", {error: {}});
     });
 });
 
