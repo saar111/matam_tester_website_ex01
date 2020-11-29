@@ -150,12 +150,15 @@ function _runTests(testNumber, maxTestsNumber, stagingId, output, cb) {
 
 function runTests(stagingId, cb) {
     let testCount = getTestCount(stagingId);
+    _runTests(1, testCount, stagingId, output, function () {
+        cb(output);
+    });
 
-
+/*
     let execs = [];
     for (let testNumber = 1; testNumber <= testCount; testNumber++) {
-    let tempLogName = `valgrind-test-${testNumber}-${makeid(15)}.out.txt`;
-    const EXEC_TEST_NUMBER = `valgrind --leak-check=full --show-leak-kinds=all --log-file="./public/${tempLogName}" ./staging/${stagingId}/compiled_program ${testNumber}`;
+        let tempLogName = `valgrind-test-${testNumber}-${makeid(15)}.out.txt`;
+        const EXEC_TEST_NUMBER = `valgrind --leak-check=full --show-leak-kinds=all --log-file="./public/${tempLogName}" ./staging/${stagingId}/compiled_program ${testNumber}`;
         let currentExec = execShellCommand(EXEC_TEST_NUMBER);
         currentExec.then((data) => {
             let error = data[0];
@@ -185,6 +188,7 @@ function runTests(stagingId, cb) {
         console.log("OUTPUT: ", output);
         cb(output);
     });
+*/
 }
 
 
