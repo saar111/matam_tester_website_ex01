@@ -69,6 +69,7 @@
                 <%- test_info.testOutput.replace(/\n/g, "<br>") %>
                 <br>
                 <% if(test_info.valgrindMessage !== "") { %>
+                    <br>
                     <%- '<div class="valgrind-failure">' + test_info.valgrindMessage + '</div>' %>
                     <%- '<a target="_blank" href="' + test_info.valgrindOutputPath + '">full_valgrind_output.txt</a>' %>
                 <% } else { %>
