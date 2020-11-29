@@ -160,13 +160,13 @@ function runTests(stagingId, cb) {
             } else if (isValgrindFailureResult === "UNKNOWN") {
                 valgrindMessage = "<b>Valgrind</b> status unknown, please look manually at output file";
             }
-            return [({testOutput: stdout, valgrindOutputPath: "/" + tempLogName, valgrindMessage: valgrindMessage})];
+            cb([({testOutput: stdout, valgrindOutputPath: "/" + tempLogName, valgrindMessage: valgrindMessage})]);
         } else {
-            return [({
+            cb([({
                 testOutput: stdout + "\n\nTest timed out, maybe you have an Infinite Loop",
                 valgrindOutputPath: "/" + tempLogName,
                 valgrindMessage: ""
-            })];
+            })]);
         }
     });
 
