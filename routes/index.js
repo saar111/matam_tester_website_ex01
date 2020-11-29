@@ -5,7 +5,7 @@ var fsExtra = require("fs-extra");
 var fs = require("fs");
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "staging/");
+        cb(null, "staging/" + req.stagingId + "/");
     },
     filename: function (req, file, cb) {
         cb(null, file.originalname);
@@ -15,8 +15,6 @@ var upload = multer({storage: storage});
 const {exec} = require('child_process');
 
 
-const GCC_COMPILE_PQ = "gcc -g -std=c99 -o staging/compiled_program -Wall -pedantic-errors -Werror -DNDEBUG staging/*.c";
-const GCC_COMPILE_EM = "gcc -g -std=c99 -o staging/compiled_program -Wall -pedantic-errors -Werror -DNDEBUG staging/*.c";
 
 function makeid(length) {
     var result = '';
@@ -28,49 +26,52 @@ function makeid(length) {
     return result;
 }
 
-function pullFile(file, cb) {
-    exec("wget --no-cache --no-cookies https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename + "?" + Math.random() + " -O staging/" + file.localname, cb);
+function pullFile(file, stagingId, cb) {
+    exec("wget --no-cache --no-cookies https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename + "?" + Math.random() + ` -O staging/${stagingId}/` + file.localname, cb);
 }
 
-function updateFiles(files, cb) {
+function updateFiles(files, stagingId, cb) {
     if (files.length === 0) {
         return cb();
     }
-    pullFile(files[0], function () {
+    pullFile(files[0], stagingId, function () {
         files.splice(0, 1);
-        updateFiles(files, cb);
+        updateFiles(files, stagingId, cb);
     })
 }
 
-function clearStaging(req, res, next) {
-    fsExtra.emptyDirSync("staging/");
+function createStagingFolder(req, res, next) {
+    let stagingId = makeid(14);
+    fs.mkdirSync("staging/" + stagingId);
+    req.stagingId = stagingId;
     next();
 }
 
 
-function pullTests(isPq, cb) {
+function pullTests(isPq, stagingId, cb) {
     // REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
     var PQ_FILES = [
         {remotename: "PriorityQueue/main.c", localname: "tests.c", branch: "PriorityQueue"},
         {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"},
         {remotename: "PriorityQueue/test_utilities.c", localname: "test_utilities.c", branch: "PriorityQueue"}
     ];
-
     var EM_FILES = [
         {remotename: "EventManager/main.c", localname: "tests.c", branch: "PriorityQueue"},
         {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"},
         {remotename: "PriorityQueue/test_utilities.c", localname: "test_utilities.c", branch: "PriorityQueue"}
     ];
+
     if (isPq) {
-        console.log("SECOND", PQ_FILES);
-        updateFiles(PQ_FILES, cb);
+        updateFiles(PQ_FILES, stagingId, cb);
     } else {
-        updateFiles(EM_FILES, cb);
+        updateFiles(EM_FILES, stagingId, cb);
     }
 }
 
-function compileCode(isPq, cb) {
-    pullTests(isPq, function () {
+function compileCode(isPq, stagingId, cb) {
+    const GCC_COMPILE_PQ = `gcc -g -std=c99 -o staging/${stagingId}/compiled_program -Wall -pedantic-errors -Werror -DNDEBUG staging/${stagingId}/*.c`;
+    const GCC_COMPILE_EM = `gcc -g -std=c99 -o staging/${stagingId}/compiled_program -Wall -pedantic-errors -Werror -DNDEBUG staging/${stagingId}/*.c`;
+    pullTests(isPq, stagingId, function () {
         if (isPq) {
             exec(GCC_COMPILE_PQ, function (error, stdout, stderr) {
                 console.log("PQ", "ERROR:", error, "STDERR:", stderr);
@@ -85,8 +86,8 @@ function compileCode(isPq, cb) {
     });
 }
 
-function getTestCount() {
-    let fileContent = fs.readFileSync("staging/tests.c");
+function getTestCount(stagingId) {
+    let fileContent = fs.readFileSync(`staging/${stagingId}/tests.c`);
     var myRegexp = /define NUMBER_TESTS (\d+)/g;
     let match = myRegexp.exec(fileContent);
     let count = parseInt(match[1]);
@@ -112,7 +113,7 @@ function isValgrindFailure(tempLogName) {
     }
 }
 
-function _runTests(testNumber, maxTestsNumber, output, cb) {
+function _runTests(testNumber, maxTestsNumber, stagingId, output, cb) {
     if (testNumber > maxTestsNumber) {
         cb();
         return;
@@ -120,8 +121,7 @@ function _runTests(testNumber, maxTestsNumber, output, cb) {
 
     let tempLogName = `valgrind-test-${testNumber}-${makeid(15)}.out.txt`;
 
-    // const EXEC_TEST_NUMBER = `./staging/compiled_program ${testNumber} > staging/test_${testNumber}_output.txt`;
-    const EXEC_TEST_NUMBER = `valgrind --leak-check=full --show-leak-kinds=all --log-file="./public/${tempLogName}" ./staging/compiled_program ${testNumber}`;
+    const EXEC_TEST_NUMBER = `valgrind --leak-check=full --show-leak-kinds=all --log-file="./public/${tempLogName}" ./staging/${stagingId}/compiled_program ${testNumber}`;
     exec(EXEC_TEST_NUMBER, function (error, stdout, stderr) {
         let isValgrindFailureResult = isValgrindFailure(tempLogName);
         let valgrindMessage = "";
@@ -131,40 +131,40 @@ function _runTests(testNumber, maxTestsNumber, output, cb) {
             valgrindMessage = "<b>Valgrind</b> status unknown, please look manually at output file";
         }
         output.push({testOutput: stdout, valgrindOutputPath: "/" + tempLogName, valgrindMessage: valgrindMessage});
-        _runTests(testNumber + 1, maxTestsNumber, output, cb);
+        _runTests(testNumber + 1, maxTestsNumber, stagingId, output, cb);
     });
 
 }
 
-function runTests(cb) {
-    let testCount = getTestCount();
+function runTests(stagingId, cb) {
+    let testCount = getTestCount(stagingId);
     let output = [];
-    _runTests(1, testCount, output, function () {
+    _runTests(1, testCount, stagingId, output, function () {
         cb(output);
     });
 }
 
 
-router.post('/', clearStaging, upload.array('projectFiles'), function (req, res) {
+router.post('/', createStagingFolder, upload.array('projectFiles'), function (req, res) {
     // REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
     var PQ_FILES = [
         {remotename: "PriorityQueue/main.c", localname: "tests.c", branch: "PriorityQueue"},
         {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"},
         {remotename: "PriorityQueue/test_utilities.c", localname: "test_utilities.c", branch: "PriorityQueue"}
     ];
-
     var EM_FILES = [
         {remotename: "EventManager/main.c", localname: "tests.c", branch: "PriorityQueue"},
         {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"},
         {remotename: "PriorityQueue/test_utilities.c", localname: "test_utilities.c", branch: "PriorityQueue"}
     ];
+
     let isPq = req.body.testType === "pq";
-    compileCode(isPq, function (error, stdout, stderr) {
+    compileCode(isPq, req.stagingId, function (error, stdout, stderr) {
         if (error) {
             res.render("index", {error: error, output: [], testPath: ""});
             return;
         }
-        runTests(function (output) {
+        runTests(req.stagingId, function (output) {
             var testPath;
             if (isPq) {
                 let file = PQ_FILES[0];
