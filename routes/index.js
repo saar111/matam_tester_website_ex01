@@ -15,8 +15,8 @@ var upload = multer({storage: storage});
 const {exec} = require('child_process');
 
 
-const GCC_COMPILE_PQ = "gcc -D malloc=xmalloc -g -std=c99 -o staging/compiled_program -Wall -pedantic-errors -Werror -DNDEBUG staging/*.c";
-const GCC_COMPILE_EM = "gcc -D malloc=xmalloc -g -std=c99 -o staging/compiled_program -Wall -pedantic-errors -Werror -DNDEBUG staging/*.c";
+const GCC_COMPILE_PQ = "gcc -D malloc=xmaloc -g -std=c99 -o staging/compiled_program -Wall -pedantic-errors -Werror -DNDEBUG staging/*.c";
+const GCC_COMPILE_EM = "gcc -D malloc=xmaloc -g -std=c99 -o staging/compiled_program -Wall -pedantic-errors -Werror -DNDEBUG staging/*.c";
 
 function makeid(length) {
     var result = '';
