@@ -64,7 +64,7 @@
             <%- error.toString().replace(/\n/g, "<br>") %>
             <%- "<br></br><hr></br>" %>
         <% } else if (output && output.length !== 0) { %>
-            <h2 class="test-file-header">Running test file: <a target="_blank" href="<% testPath %>">tests.c</a>
+            <h2 class="test-file-header">Running test file: <a target="_blank" href="<%- testPath %>">tests.c</a>
                 <div class="subtitle">(Use this file to understand why your code failed a certain test)</div>
             </h2>
             <br> <br>

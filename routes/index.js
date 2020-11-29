@@ -70,11 +70,11 @@ function compileCode(isPq, stagingId, cb) {
     const GCC_COMPILE_EM = `gcc -g -std=c99 -o staging/${stagingId}/compiled_program -Wall -pedantic-errors -Werror -DNDEBUG staging/${stagingId}/*.c`;
     pullTests(isPq, stagingId, function () {
         if (isPq) {
-            exec(GCC_COMPILE_PQ, function (error, stdout, stderr) {
+            exec(GCC_COMPILE_PQ, {timeout: (1000 * 120)}, function (error, stdout, stderr) {
                 cb(error, stdout, stderr);
             });
         } else {
-            exec(GCC_COMPILE_EM, function (error, stdout, stderr) {
+            exec(GCC_COMPILE_EM, {timeout: (1000 * 120)}, function (error, stdout, stderr) {
                 cb(error, stdout, stderr);
             });
         }
@@ -137,6 +137,9 @@ function runTests(stagingId, cb) {
     _runTests(1, testCount, stagingId, output, function () {
         cb(output);
     });
+
+
+
 }
 
 
