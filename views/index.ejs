@@ -26,6 +26,9 @@
     .valgrind-success {
         color: green;
     }
+    .success {
+        color: green;
+    }
 
     .valgrind-failure {
         color: red;
@@ -71,7 +74,7 @@
 
             <div class="tests-output">
                 <% output.forEach(function(test_info){ %>
-                    <%- test_info.testOutput.replace(/\n/g, "<br>") %>
+                    <%- test_info.testOutput.replace(/\n/g, "<br>").replace(/\[OK\]/g, "<span class='success'>[OK]</span><br>") %>
                     <br>
                     <% if(test_info.valgrindMessage !== "") { %>
                         <br>
@@ -137,7 +140,7 @@
         </div>
         <br>
         <br>
-        <input type="submit" class="btn btn-primary" value="Run Tests" onclick="this.parentNode.removeChild(this);this.parentNode.submit();">
+        <input type="submit" class="btn btn-primary" value="Run Tests" onclick="this.parentNode.submit();this.parentNode.removeChild(this);">
         <div class="subtitle" style="font-size:88%;">(Might take 30-60 seconds to run)</div>
     </form>
 </div>
