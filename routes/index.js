@@ -163,7 +163,7 @@ function runTests(stagingId, cb) {
             cb([({testOutput: stdout, valgrindOutputPath: "/" + tempLogName, valgrindMessage: valgrindMessage})]);
         } else {
             cb([({
-                testOutput: stdout + "\n\nTest timed out, maybe you have an Infinite Loop",
+                testOutput: stdout + "\n\n<b>Test timed out, maybe you have an Infinite Loop</b><br>",
                 valgrindOutputPath: "/" + tempLogName,
                 valgrindMessage: ""
             })]);
