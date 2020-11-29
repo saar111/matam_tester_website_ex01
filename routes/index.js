@@ -160,8 +160,11 @@ function runTests(stagingId, cb) {
             } else if (isValgrindFailureResult === "UNKNOWN") {
                 valgrindMessage = "<b>Valgrind</b> status unknown, please look manually at output file";
             }
+
+            exec("ps -ef | grep valgrind.bin | grep -v grep | awk '{print $2}' | xargs kill", function(){});
             cb([({testOutput: stdout, valgrindOutputPath: "/" + tempLogName, valgrindMessage: valgrindMessage})]);
         } else {
+            exec("ps -ef | grep valgrind.bin | grep -v grep | awk '{print $2}' | xargs kill", function(){});
             cb([({
                 testOutput: stdout + "\n\n<b>Test timed out, maybe you have an Infinite Loop</b><br>",
                 valgrindOutputPath: "/" + tempLogName,
