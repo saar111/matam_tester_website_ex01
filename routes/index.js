@@ -50,12 +50,14 @@ function clearStaging(req, res, next) {
 // REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
 var PQ_FILES = [
     {remotename: "PriorityQueue/main.c", localname: "tests.c", branch: "PriorityQueue"},
-    {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}
+    {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"},
+    {remotename: "PriorityQueue/test_utilities.c", localname: "test_utilities.c", branch: "PriorityQueue"}
 ];
 
 var EM_FILES = [
     {remotename: "EventManager/main.c", localname: "tests.c", branch: "PriorityQueue"},
-    {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}
+    {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"},
+    {remotename: "PriorityQueue/test_utilities.c", localname: "test_utilities.c", branch: "PriorityQueue"}
 ];
 
 function pullTests(isPq, cb) {
