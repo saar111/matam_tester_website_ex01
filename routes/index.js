@@ -70,11 +70,11 @@ function compileCode(isPq, stagingId, cb) {
     const GCC_COMPILE_EM = `gcc -g -std=c99 -o staging/${stagingId}/compiled_program -Wall -pedantic-errors -Werror -DNDEBUG staging/${stagingId}/*.c`;
     pullTests(isPq, stagingId, function () {
         if (isPq) {
-            exec(GCC_COMPILE_PQ, {timeout: (1000 * 120)}, function (error, stdout, stderr) {
+            exec(GCC_COMPILE_PQ, function (error, stdout, stderr) {
                 cb(error, stdout, stderr);
             });
         } else {
-            exec(GCC_COMPILE_EM, {timeout: (1000 * 120)}, function (error, stdout, stderr) {
+            exec(GCC_COMPILE_EM, function (error, stdout, stderr) {
                 cb(error, stdout, stderr);
             });
         }
@@ -117,15 +117,19 @@ function _runTests(testNumber, maxTestsNumber, stagingId, output, cb) {
     let tempLogName = `valgrind-test-${testNumber}-${makeid(15)}.out.txt`;
 
     const EXEC_TEST_NUMBER = `valgrind --leak-check=full --show-leak-kinds=all --log-file="./public/${tempLogName}" ./staging/${stagingId}/compiled_program ${testNumber}`;
-    exec(EXEC_TEST_NUMBER, function (error, stdout, stderr) {
-        let isValgrindFailureResult = isValgrindFailure(tempLogName);
-        let valgrindMessage = "";
-        if (isValgrindFailureResult >= 1) {
-            valgrindMessage = "<b>Valgrind</b> has found " + isValgrindFailureResult + " error(s), check full output file";
-        } else if (isValgrindFailureResult === "UNKNOWN") {
-            valgrindMessage = "<b>Valgrind</b> status unknown, please look manually at output file";
+    exec(EXEC_TEST_NUMBER, {timeout: (1000 * 15)}, function (error, stdout, stderr) {
+        if(!error) {
+            let isValgrindFailureResult = isValgrindFailure(tempLogName);
+            let valgrindMessage = "";
+            if (isValgrindFailureResult >= 1) {
+                valgrindMessage = "<b>Valgrind</b> has found " + isValgrindFailureResult + " error(s), check full output file";
+            } else if (isValgrindFailureResult === "UNKNOWN") {
+                valgrindMessage = "<b>Valgrind</b> status unknown, please look manually at output file";
+            }
+            output.push({testOutput: stdout, valgrindOutputPath: "/" + tempLogName, valgrindMessage: valgrindMessage});
+        } else {
+            output.push({testOutput: stdout + "\n\nTest timed out, maybe you have an Infinite Loop", valgrindOutputPath: "/" + tempLogName, valgrindMessage: ""});
         }
-        output.push({testOutput: stdout, valgrindOutputPath: "/" + tempLogName, valgrindMessage: valgrindMessage});
         _runTests(testNumber + 1, maxTestsNumber, stagingId, output, cb);
     });
 
