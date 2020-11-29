@@ -108,6 +108,15 @@ function isValgrindFailure(tempLogName) {
     }
 }
 
+function execShellCommand(cmd) {
+    const exec = require('child_process').exec;
+    return new Promise((resolve, reject) => {
+        exec(cmd, {timeout: (1000 * 10)}, (error, stdout, stderr) => {
+            resolve([error, stdout, stderr]);
+        });
+    });
+}
+
 function _runTests(testNumber, maxTestsNumber, stagingId, output, cb) {
     if (testNumber > maxTestsNumber) {
         cb();
@@ -117,8 +126,8 @@ function _runTests(testNumber, maxTestsNumber, stagingId, output, cb) {
     let tempLogName = `valgrind-test-${testNumber}-${makeid(15)}.out.txt`;
 
     const EXEC_TEST_NUMBER = `valgrind --leak-check=full --show-leak-kinds=all --log-file="./public/${tempLogName}" ./staging/${stagingId}/compiled_program ${testNumber}`;
-    exec(EXEC_TEST_NUMBER, {timeout: (1000 * 15)}, function (error, stdout, stderr) {
-        if(!error) {
+    exec(EXEC_TEST_NUMBER, {timeout: (1000 * 12)}, function (error, stdout, stderr) {
+        if (!error) {
             let isValgrindFailureResult = isValgrindFailure(tempLogName);
             let valgrindMessage = "";
             if (isValgrindFailureResult >= 1) {
@@ -128,7 +137,11 @@ function _runTests(testNumber, maxTestsNumber, stagingId, output, cb) {
             }
             output.push({testOutput: stdout, valgrindOutputPath: "/" + tempLogName, valgrindMessage: valgrindMessage});
         } else {
-            output.push({testOutput: stdout + "\n\nTest timed out, maybe you have an Infinite Loop", valgrindOutputPath: "/" + tempLogName, valgrindMessage: ""});
+            output.push({
+                testOutput: stdout + "\n\nTest timed out, maybe you have an Infinite Loop",
+                valgrindOutputPath: "/" + tempLogName,
+                valgrindMessage: ""
+            });
         }
         _runTests(testNumber + 1, maxTestsNumber, stagingId, output, cb);
     });
@@ -137,13 +150,41 @@ function _runTests(testNumber, maxTestsNumber, stagingId, output, cb) {
 
 function runTests(stagingId, cb) {
     let testCount = getTestCount(stagingId);
-    let output = [];
-    _runTests(1, testCount, stagingId, output, function () {
+
+    let tempLogName = `valgrind-test-${testNumber}-${makeid(15)}.out.txt`;
+    const EXEC_TEST_NUMBER = `valgrind --leak-check=full --show-leak-kinds=all --log-file="./public/${tempLogName}" ./staging/${stagingId}/compiled_program ${testNumber}`;
+
+    let execs = [];
+    for (let i = 1; i <= testCount; i++) {
+        let currentExec = execShellCommand(EXEC_TEST_NUMBER);
+        currentExec.then((data) => {
+            let error = data[0];
+            let stdout = data[1];
+            let stderr = data[2];
+            if (!error) {
+                let isValgrindFailureResult = isValgrindFailure(tempLogName);
+                let valgrindMessage = "";
+                if (isValgrindFailureResult >= 1) {
+                    valgrindMessage = "<b>Valgrind</b> has found " + isValgrindFailureResult + " error(s), check full output file";
+                } else if (isValgrindFailureResult === "UNKNOWN") {
+                    valgrindMessage = "<b>Valgrind</b> status unknown, please look manually at output file";
+                }
+                return ({testOutput: stdout, valgrindOutputPath: "/" + tempLogName, valgrindMessage: valgrindMessage});
+            } else {
+                return ({
+                    testOutput: stdout + "\n\nTest timed out, maybe you have an Infinite Loop",
+                    valgrindOutputPath: "/" + tempLogName,
+                    valgrindMessage: ""
+                });
+            }
+        });
+        execs.push(currentExec);
+    }
+
+    Promise.all(execs).then((output) => {
+        console.log("OUTPUT: ", output);
         cb(output);
     });
-
-
-
 }
 
 
