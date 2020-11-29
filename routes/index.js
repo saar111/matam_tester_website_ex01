@@ -149,11 +149,34 @@ function _runTests(testNumber, maxTestsNumber, stagingId, output, cb) {
 }
 
 function runTests(stagingId, cb) {
+    const EXEC_TEST_NUMBER = `valgrind --leak-check=full --show-leak-kinds=all --log-file="./public/${tempLogName}" ./staging/${stagingId}/compiled_program`;
+    exec(EXEC_TEST_NUMBER, {timeout: (1000 * 40)}, function (error, stdout, stderr) {
+        if (!error) {
+            let isValgrindFailureResult = isValgrindFailure(tempLogName);
+            let valgrindMessage = "";
+            if (isValgrindFailureResult >= 1) {
+                valgrindMessage = "<b>Valgrind</b> has found " + isValgrindFailureResult + " error(s), check full output file";
+            } else if (isValgrindFailureResult === "UNKNOWN") {
+                valgrindMessage = "<b>Valgrind</b> status unknown, please look manually at output file";
+            }
+            return [({testOutput: stdout, valgrindOutputPath: "/" + tempLogName, valgrindMessage: valgrindMessage})];
+        } else {
+            return [({
+                testOutput: stdout + "\n\nTest timed out, maybe you have an Infinite Loop",
+                valgrindOutputPath: "/" + tempLogName,
+                valgrindMessage: ""
+            })];
+        }
+    });
+
+
+/*
     let testCount = getTestCount(stagingId);
     let output = [];
     _runTests(1, testCount, stagingId, output, function () {
         cb(output);
     });
+*/
 
 /*
     let execs = [];
