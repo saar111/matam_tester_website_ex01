@@ -126,7 +126,7 @@ function _runTests(testNumber, maxTestsNumber, stagingId, output, cb) {
 
     let tempLogName = `valgrind-test-${testNumber}-${makeid(15)}.out.txt`;
     const EXEC_TEST_NUMBER = `valgrind --leak-check=full --show-leak-kinds=all --log-file="./public/${tempLogName}" ./staging/${stagingId}/compiled_program ${testNumber}`;
-    exec(EXEC_TEST_NUMBER, {timeout: (1000 * 12)}, function (error, stdout, stderr) {
+    exec(EXEC_TEST_NUMBER, {timeout: (1000 * 10)}, function (error, stdout, stderr) {
         if (!error) {
             let isValgrindFailureResult = isValgrindFailure(tempLogName);
             let valgrindMessage = "";
@@ -150,6 +150,7 @@ function _runTests(testNumber, maxTestsNumber, stagingId, output, cb) {
 
 function runTests(stagingId, cb) {
     let testCount = getTestCount(stagingId);
+    let output = [];
     _runTests(1, testCount, stagingId, output, function () {
         cb(output);
     });
