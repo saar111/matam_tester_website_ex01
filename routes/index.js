@@ -126,9 +126,9 @@ function _runTests(testNumber, maxTestsNumber, output, cb) {
         let isValgrindFailureResult = isValgrindFailure(tempLogName);
         let valgrindMessage = "";
         if (isValgrindFailureResult >= 1) {
-            valgrindMessage = "Valgrind has found " + isValgrindFailureResult + " error(s), check full output file";
+            valgrindMessage = "<b>Valgrind</b> has found " + isValgrindFailureResult + " error(s), check full output file";
         } else if (isValgrindFailureResult === "UNKNOWN") {
-            valgrindMessage = "Valgrind status unknown, please look manually at output file";
+            valgrindMessage = "<b>Valgrind</b> status unknown, please look manually at output file";
         }
         output.push({testOutput: stdout, valgrindOutputPath: "/" + tempLogName, valgrindMessage: valgrindMessage});
         _runTests(testNumber + 1, maxTestsNumber, output, cb);
