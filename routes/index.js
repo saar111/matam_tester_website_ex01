@@ -15,7 +15,6 @@ var upload = multer({storage: storage});
 const {exec} = require('child_process');
 
 
-
 function makeid(length) {
     var result = '';
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -52,13 +51,11 @@ function pullTests(isPq, stagingId, cb) {
     // REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
     var PQ_FILES = [
         {remotename: "PriorityQueue/tests.c", localname: "tests.c", branch: "PriorityQueue"},
-        {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"},
-        {remotename: "PriorityQueue/test_utilities.c", localname: "test_utilities.c", branch: "PriorityQueue"}
+        {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}
     ];
     var EM_FILES = [
         {remotename: "EventManager/tests.c", localname: "tests.c", branch: "PriorityQueue"},
-        {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"},
-        {remotename: "PriorityQueue/test_utilities.c", localname: "test_utilities.c", branch: "PriorityQueue"}
+        {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}
     ];
 
     if (isPq) {
@@ -147,13 +144,11 @@ router.post('/', createStagingFolder, upload.array('projectFiles'), function (re
     // REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
     var PQ_FILES = [
         {remotename: "PriorityQueue/tests.c", localname: "tests.c", branch: "PriorityQueue"},
-        {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"},
-        {remotename: "PriorityQueue/test_utilities.c", localname: "test_utilities.c", branch: "PriorityQueue"}
+        {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}
     ];
     var EM_FILES = [
         {remotename: "EventManager/tests.c", localname: "tests.c", branch: "PriorityQueue"},
-        {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"},
-        {remotename: "PriorityQueue/test_utilities.c", localname: "test_utilities.c", branch: "PriorityQueue"}
+        {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}
     ];
 
     let isPq = req.body.testType === "pq";
