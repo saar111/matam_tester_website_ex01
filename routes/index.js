@@ -123,8 +123,8 @@ function _runTests(testNumber, maxTestsNumber, stagingId, output, cb) {
         return;
     }
 
-    let tempLogName = `valgrind-test-${testNumber}-${makeid(15)}.out.txt`;
 
+    let tempLogName = `valgrind-test-${testNumber}-${makeid(15)}.out.txt`;
     const EXEC_TEST_NUMBER = `valgrind --leak-check=full --show-leak-kinds=all --log-file="./public/${tempLogName}" ./staging/${stagingId}/compiled_program ${testNumber}`;
     exec(EXEC_TEST_NUMBER, {timeout: (1000 * 12)}, function (error, stdout, stderr) {
         if (!error) {
@@ -151,11 +151,11 @@ function _runTests(testNumber, maxTestsNumber, stagingId, output, cb) {
 function runTests(stagingId, cb) {
     let testCount = getTestCount(stagingId);
 
-    let tempLogName = `valgrind-test-${testNumber}-${makeid(15)}.out.txt`;
-    const EXEC_TEST_NUMBER = `valgrind --leak-check=full --show-leak-kinds=all --log-file="./public/${tempLogName}" ./staging/${stagingId}/compiled_program ${testNumber}`;
 
     let execs = [];
     for (let testNumber = 1; testNumber <= testCount; testNumber++) {
+    let tempLogName = `valgrind-test-${testNumber}-${makeid(15)}.out.txt`;
+    const EXEC_TEST_NUMBER = `valgrind --leak-check=full --show-leak-kinds=all --log-file="./public/${tempLogName}" ./staging/${stagingId}/compiled_program ${testNumber}`;
         let currentExec = execShellCommand(EXEC_TEST_NUMBER);
         currentExec.then((data) => {
             let error = data[0];
