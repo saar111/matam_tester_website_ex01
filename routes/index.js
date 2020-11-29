@@ -155,7 +155,7 @@ function runTests(stagingId, cb) {
     const EXEC_TEST_NUMBER = `valgrind --leak-check=full --show-leak-kinds=all --log-file="./public/${tempLogName}" ./staging/${stagingId}/compiled_program ${testNumber}`;
 
     let execs = [];
-    for (let i = 1; i <= testCount; i++) {
+    for (let testNumber = 1; testNumber <= testCount; testNumber++) {
         let currentExec = execShellCommand(EXEC_TEST_NUMBER);
         currentExec.then((data) => {
             let error = data[0];
