@@ -41,6 +41,7 @@
     .my-container {
         display: inline-block;
         position: absolute;
+        max-width: 735px;
         left: 50%;
         transform: translateX(-50%);
     }
@@ -48,6 +49,13 @@
     .test-file-header {
         border: 2px solid #50b761;
         padding: 8px 16px 11px 16px;
+    }
+
+    .tests-output {
+        display: inline-block;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
 </style>
@@ -65,20 +73,22 @@
             </h2>
             <br> <br>
 
-            <% output.forEach(function(test_info){ %>
-                <%- test_info.testOutput.replace(/\n/g, "<br>") %>
-                <br>
-                <% if(test_info.valgrindMessage !== "") { %>
+            <div class="tests-output">
+                <% output.forEach(function(test_info){ %>
+                    <%- test_info.testOutput.replace(/\n/g, "<br>") %>
                     <br>
-                    <%- '<div class="valgrind-failure">' + test_info.valgrindMessage + '</div>' %>
-                    <%- '<a target="_blank" href="' + test_info.valgrindOutputPath + '">full_valgrind_output.txt</a>' %>
-                <% } else { %>
-                    <%- '<div class="valgrind-success"><b>Valgrind</b> ran successfully (no leaks found)</div>' %>
-                <% } %>
+                    <% if(test_info.valgrindMessage !== "") { %>
+                        <br>
+                        <%- '<div class="valgrind-failure">' + test_info.valgrindMessage + '</div>' %>
+                        <%- '<a target="_blank" href="' + test_info.valgrindOutputPath + '">full_valgrind_output.txt</a>' %>
+                    <% } else { %>
+                        <%- '<div class="valgrind-success"><b>Valgrind</b> ran successfully (no leaks found)</div>' %>
+                    <% } %>
 
 
-                <%- "<div class='seperator'></div>" %>
-            <% }); %>
+                    <%- "<div class='seperator'></div>" %>
+                <% }); %>
+            </div>
             <%- "<br></br><hr></br>" %>
         <% } else { %>
             <div class="notice-start-header">
