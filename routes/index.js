@@ -47,20 +47,20 @@ function clearStaging(req, res, next) {
     next();
 }
 
-// REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
-var PQ_FILES = [
-    {remotename: "PriorityQueue/main.c", localname: "tests.c", branch: "PriorityQueue"},
-    {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"},
-    {remotename: "PriorityQueue/test_utilities.c", localname: "test_utilities.c", branch: "PriorityQueue"}
-];
-
-var EM_FILES = [
-    {remotename: "EventManager/main.c", localname: "tests.c", branch: "PriorityQueue"},
-    {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"},
-    {remotename: "PriorityQueue/test_utilities.c", localname: "test_utilities.c", branch: "PriorityQueue"}
-];
 
 function pullTests(isPq, cb) {
+    // REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
+    var PQ_FILES = [
+        {remotename: "PriorityQueue/main.c", localname: "tests.c", branch: "PriorityQueue"},
+        {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"},
+        {remotename: "PriorityQueue/test_utilities.c", localname: "test_utilities.c", branch: "PriorityQueue"}
+    ];
+
+    var EM_FILES = [
+        {remotename: "EventManager/main.c", localname: "tests.c", branch: "PriorityQueue"},
+        {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"},
+        {remotename: "PriorityQueue/test_utilities.c", localname: "test_utilities.c", branch: "PriorityQueue"}
+    ];
     if (isPq) {
         console.log("SECOND", PQ_FILES);
         updateFiles(PQ_FILES, cb);
@@ -146,14 +146,17 @@ function runTests(cb) {
 
 
 router.post('/', clearStaging, upload.array('projectFiles'), function (req, res) {
+    // REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
     var PQ_FILES = [
         {remotename: "PriorityQueue/main.c", localname: "tests.c", branch: "PriorityQueue"},
-        {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}
+        {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"},
+        {remotename: "PriorityQueue/test_utilities.c", localname: "test_utilities.c", branch: "PriorityQueue"}
     ];
 
     var EM_FILES = [
         {remotename: "EventManager/main.c", localname: "tests.c", branch: "PriorityQueue"},
-        {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}
+        {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"},
+        {remotename: "PriorityQueue/test_utilities.c", localname: "test_utilities.c", branch: "PriorityQueue"}
     ];
     let isPq = req.body.testType === "pq";
     compileCode(isPq, function (error, stdout, stderr) {
@@ -163,7 +166,7 @@ router.post('/', clearStaging, upload.array('projectFiles'), function (req, res)
         }
         runTests(function (output) {
             var testPath;
-            if(isPq) {
+            if (isPq) {
                 let file = PQ_FILES[0];
                 testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
             } else {
