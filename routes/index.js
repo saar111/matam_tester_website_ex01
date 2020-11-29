@@ -51,12 +51,12 @@ function createStagingFolder(req, res, next) {
 function pullTests(isPq, stagingId, cb) {
     // REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
     var PQ_FILES = [
-        {remotename: "PriorityQueue/main.c", localname: "tests.c", branch: "PriorityQueue"},
+        {remotename: "PriorityQueue/tests.c", localname: "tests.c", branch: "PriorityQueue"},
         {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"},
         {remotename: "PriorityQueue/test_utilities.c", localname: "test_utilities.c", branch: "PriorityQueue"}
     ];
     var EM_FILES = [
-        {remotename: "EventManager/main.c", localname: "tests.c", branch: "PriorityQueue"},
+        {remotename: "EventManager/tests.c", localname: "tests.c", branch: "PriorityQueue"},
         {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"},
         {remotename: "PriorityQueue/test_utilities.c", localname: "test_utilities.c", branch: "PriorityQueue"}
     ];
@@ -74,12 +74,10 @@ function compileCode(isPq, stagingId, cb) {
     pullTests(isPq, stagingId, function () {
         if (isPq) {
             exec(GCC_COMPILE_PQ, function (error, stdout, stderr) {
-                console.log("PQ", "ERROR:", error, "STDERR:", stderr);
                 cb(error, stdout, stderr);
             });
         } else {
             exec(GCC_COMPILE_EM, function (error, stdout, stderr) {
-                console.log("EM");
                 cb(error, stdout, stderr);
             });
         }
@@ -148,12 +146,12 @@ function runTests(stagingId, cb) {
 router.post('/', createStagingFolder, upload.array('projectFiles'), function (req, res) {
     // REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
     var PQ_FILES = [
-        {remotename: "PriorityQueue/main.c", localname: "tests.c", branch: "PriorityQueue"},
+        {remotename: "PriorityQueue/tests.c", localname: "tests.c", branch: "PriorityQueue"},
         {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"},
         {remotename: "PriorityQueue/test_utilities.c", localname: "test_utilities.c", branch: "PriorityQueue"}
     ];
     var EM_FILES = [
-        {remotename: "EventManager/main.c", localname: "tests.c", branch: "PriorityQueue"},
+        {remotename: "EventManager/tests.c", localname: "tests.c", branch: "PriorityQueue"},
         {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"},
         {remotename: "PriorityQueue/test_utilities.c", localname: "test_utilities.c", branch: "PriorityQueue"}
     ];
