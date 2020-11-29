@@ -167,7 +167,8 @@ function runTests(stagingId, cb) {
         } else {
             exec("ps -ef | grep valgrind.bin | grep -v grep | awk '{print $2}' | xargs kill", function () {
                 cb([({
-                    testOutput: stdout + stderr + "<b>Test timed out, maybe you have an Infinite Loop</b><br>",
+                    testOutput: stdout + stderr + "<b class='valgrind-failure'>Test timed out, you probably have an infinite Loop in your code.<br>" +
+                        " Further tests cannot be run, try running the tests once more and if it doesn't work, look for an infinite loop.</b><br>",
                     valgrindOutputPath: "/" + tempLogName,
                     valgrindMessage: ""
                 })]);
