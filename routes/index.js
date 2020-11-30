@@ -152,6 +152,13 @@ function runTests(stagingId, cb) {
     let tempLogName = `valgrind-test-${makeid(15)}.out.txt`;
     const EXEC_TEST_NUMBER = `valgrind --leak-check=full --show-leak-kinds=all --log-file="./public/${tempLogName}" ./staging/${stagingId}/compiled_program`;
     exec(EXEC_TEST_NUMBER, {timeout: (1000 * 40)}, function (error, stdout, stderr) {
+        let isValgrindFailureResult = isValgrindFailure(tempLogName);
+        let valgrindMessage = "";
+        if (isValgrindFailureResult >= 1) {
+            valgrindMessage = "<b>Valgrind</b> has found " + isValgrindFailureResult + " error(s), check full output file";
+        } else if (isValgrindFailureResult === "UNKNOWN") {
+            valgrindMessage = "<b>Valgrind</b> status unknown, please look manually at output file";
+        }
         if (!error) {
             let isValgrindFailureResult = isValgrindFailure(tempLogName);
             let valgrindMessage = "";
