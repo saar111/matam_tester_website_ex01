@@ -77,7 +77,7 @@
 
             <div class="tests-output">
                 <% output.forEach(function(test_info){ %>
-                    <%- test_info.testOutput.replace(/\n/g, "<br>").replace(/\[OK\]/g, "<span class='success'>[OK]</span>").replace(/\+ Running/g, "\n+ Running") %>
+                    <%- test_info.testOutput.replace(/\n/g, "<br>").replace(/\[OK\]/g, "<span class='success'>[OK]</span>").replace(/\+ Running/g, "<br><hr>+ Running") %>
                     <br>
                     <% if(test_info.valgrindMessage !== "") { %>
                         <br>
