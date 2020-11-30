@@ -64,7 +64,7 @@
     <div>
         <% if (error && error.toString() !== "[object Object]") { %>
             <%- "<h2>Compliation Error, Details:</h2>" %>
-            <%- error.toString().replace(/\n/g, "<br>") %>
+            <%- error.toString().replace(/\n/g, "<br>").replace(/ /g, "&nbsp;") %>
             <%- "<br></br><hr></br>" %>
         <% } else if (output && output.length !== 0) { %>
             <h2 class="test-file-header">Running test file: <a target="_blank" href="<%- testPath %>">tests.c</a>
