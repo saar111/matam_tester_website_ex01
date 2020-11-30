@@ -181,7 +181,7 @@ function runTests(stagingId, cb) {
                     // testOutput: stdout + stderr + "<b class='valgrind-failure'>Test timed out, you probably have an infinite Loop in your code.<br>" +
                     //     " Further tests cannot be run, try running the tests once more and if it doesn't work, look for an infinite loop.</b><br>",
                     valgrindOutputPath: "/" + tempLogName,
-                    valgrindMessage: ""
+                    valgrindMessage: valgrindMessage
                 })]);
             });
         }
