@@ -167,8 +167,12 @@ function runTests(stagingId, cb) {
         } else {
             exec("ps -ef | grep valgrind.bin | grep -v grep | awk '{print $2}' | xargs kill", function () {
                 cb([({
-                    testOutput: stdout + stderr + "<b class='valgrind-failure'>Test timed out, you probably have an infinite Loop in your code.<br>" +
-                        " Further tests cannot be run, try running the tests once more and if it doesn't work, look for an infinite loop.</b><br>",
+                    testOutput: "<b class='valgrind-failure'>The testing has encountered an error that has stopped the code from running further.</b><br>" +
+                        "Error details: " + error + "<br>" +
+                        "More Details:" + (stderr || "None") + "<br>" +
+                        "<b>Another possibility is that you have an infinite loop in your code and the testing timed out, if the error details are empty that is probably the case.</b>",
+                    // testOutput: stdout + stderr + "<b class='valgrind-failure'>Test timed out, you probably have an infinite Loop in your code.<br>" +
+                    //     " Further tests cannot be run, try running the tests once more and if it doesn't work, look for an infinite loop.</b><br>",
                     valgrindOutputPath: "/" + tempLogName,
                     valgrindMessage: ""
                 })]);
@@ -241,7 +245,7 @@ router.post('/', createStagingFolder, upload.array('projectFiles'), function (re
             return;
         }
         runTests(req.stagingId, function (output) {
-            var testPath;
+            var testPath
             if (isPq) {
                 let file = PQ_FILES[0];
                 testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
