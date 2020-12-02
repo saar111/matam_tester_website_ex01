@@ -55,7 +55,7 @@ function pullTests(isPq, stagingId, cb) {
     ];
     var EM_FILES = [
         {remotename: "EventManager/tests.c", localname: "tests.c", branch: "PriorityQueue"},
-        {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}
+        {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "EventManager"}
     ];
 
     if (isPq) {
@@ -240,7 +240,7 @@ router.post('/', createStagingFolder, upload.array('projectFiles'), function (re
     ];
     var EM_FILES = [
         {remotename: "EventManager/tests.c", localname: "tests.c", branch: "PriorityQueue"},
-        {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}
+        {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "EventManager"}
     ];
 
     let isPq = req.body.testType === "pq";
