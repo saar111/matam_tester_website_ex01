@@ -47,34 +47,39 @@ function createStagingFolder(req, res, next) {
 }
 
 
-function pullTests(isPq, stagingId, cb) {
+function pullTests(testType, stagingId, cb) {
     // REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
     var PQ_FILES = [
         {remotename: "PriorityQueue/tests.c", localname: "tests.c", branch: "PriorityQueue"},
         {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}
     ];
     var EM_FILES = [
-        {remotename: "EventManager/tests.c", localname: "tests.c", branch: "PriorityQueue"},
+        {remotename: "EventManager/tests.c", localname: "tests.c", branch: "EventManager"},
+        {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "EventManager"}
+    ];
+    var DATE_FILES = [
+        {remotename: "EventManager/date_tests.c", localname: "date_tests.c", branch: "EventManager"},
         {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "EventManager"}
     ];
 
-    if (isPq) {
+    if (testType === "pq") {
         updateFiles(PQ_FILES, stagingId, cb);
-    } else {
+    } else if(testType === "em"){
         updateFiles(EM_FILES, stagingId, cb);
+    } else {
+        updateFiles(DATE_FILES, stagingId, cb);
     }
 }
 
-function compileCode(isPq, stagingId, cb) {
-    const GCC_COMPILE_PQ = `gcc -g -std=c99 -o staging/${stagingId}/compiled_program -Wall -pedantic-errors -Werror -DNDEBUG staging/${stagingId}/*.c`;
-    const GCC_COMPILE_EM = `gcc -g -std=c99 -o staging/${stagingId}/compiled_program -Wall -pedantic-errors -Werror -DNDEBUG staging/${stagingId}/*.c`;
-    pullTests(isPq, stagingId, function () {
-        if (isPq) {
-            exec(GCC_COMPILE_PQ, function (error, stdout, stderr) {
+function compileCode(testType, stagingId, cb) {
+    const GCC_COMPILE_TEMPLATE = `gcc -g -std=c99 -o staging/${stagingId}/compiled_program -Wall -pedantic-errors -Werror staging/${stagingId}/*.c`;
+    pullTests(testType, stagingId, function () {
+        if (testType) {
+            exec(GCC_COMPILE_TEMPLATE, function (error, stdout, stderr) {
                 cb(error, stdout, stderr);
             });
         } else {
-            exec(GCC_COMPILE_EM, function (error, stdout, stderr) {
+            exec(GCC_COMPILE_TEMPLATE, function (error, stdout, stderr) {
                 cb(error, stdout, stderr);
             });
         }
@@ -239,23 +244,30 @@ router.post('/', createStagingFolder, upload.array('projectFiles'), function (re
         {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}
     ];
     var EM_FILES = [
-        {remotename: "EventManager/tests.c", localname: "tests.c", branch: "PriorityQueue"},
+        {remotename: "EventManager/tests.c", localname: "tests.c", branch: "EventManager"},
+        {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "EventManager"}
+    ];
+    var DATE_FILES = [
+        {remotename: "EventManager/date_tests.c", localname: "date_tests.c", branch: "EventManager"},
         {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "EventManager"}
     ];
 
-    let isPq = req.body.testType === "pq";
-    compileCode(isPq, req.stagingId, function (error, stdout, stderr) {
+    let testType = req.body.testType;
+    compileCode(testType, req.stagingId, function (error, stdout, stderr) {
         if (error) {
             res.render("index", {error: error, output: [], testPath: ""});
             return;
         }
         runTests(req.stagingId, function (output) {
             var testPath
-            if (isPq) {
+            if (testType === "pq") {
                 let file = PQ_FILES[0];
                 testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
-            } else {
+            } else if(testType === "em"){
                 let file = EM_FILES[0];
+                testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
+            } else {
+                let file = DATE_FILES[0];
                 testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
             }
             res.render("index", {error: {}, output: output, testPath: testPath});
