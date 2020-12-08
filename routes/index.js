@@ -263,7 +263,7 @@ router.post('/', createStagingFolder, upload.array('projectFiles'), function (re
     let testType = req.body.testType;
     compileCode(testType, req.stagingId, function (error, stdout, stderr) {
         if (error) {
-            res.render("index", {error: error, output: [], testPath: ""});
+            res.render("index", {error: error, output: [], testPath: "", stagingId: req.stagingId});
             return;
         }
         runTests(req.stagingId, function (output) {
@@ -279,15 +279,15 @@ router.post('/', createStagingFolder, upload.array('projectFiles'), function (re
                 testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
             } else if (testType === "em-pq") {
                 let file = EM_PQ_FILES[0];
-                testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
+                testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + tile.remotename;
             }
-            res.render("index", {error: {}, output: output, testPath: testPath});
+            res.render("index", {error: {}, output: output, testPath: testPath, stagingId: req.stagingId});
         });
     });
 });
 
 router.get('/', function (req, res, next) {
-    res.render('index', {error: {}, output: [], testPath: ""});
+    res.render('index', {error: {}, output: [], testPath: "", stagingId: ""});
 });
 
 module.exports = router;
