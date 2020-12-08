@@ -82,7 +82,7 @@ function compileCode(testType, stagingId, cb) {
     const GCC_COMPILE_EM_ALONE = `gcc -g -std=c99 -o staging/${stagingId}/compiled_program -Wall -pedantic-errors -Werror -Lstaging -llibpriority_queue.a staging/${stagingId}/*.c`;
     pullTests(testType, stagingId, function () {
         if (testType === "em") {
-            exec(GCC_COMPILE_EM_ALONE, function (error, stdout, stderr) {
+            exec(GCC_COMPILE_TEMPLATE, function (error, stdout, stderr) {
                 cb(error, stdout, stderr);
             });
         } else {
