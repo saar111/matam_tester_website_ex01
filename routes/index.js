@@ -279,7 +279,7 @@ router.post('/', createStagingFolder, upload.array('projectFiles'), function (re
                 testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
             } else if (testType === "em-pq") {
                 let file = EM_PQ_FILES[0];
-                testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + tile.remotename;
+                testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
             }
             res.render("index", {error: {}, output: output, testPath: testPath, stagingId: req.stagingId});
         });
