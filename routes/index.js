@@ -246,7 +246,10 @@ router.post('/', createStagingFolder, upload.array('projectFiles'), function (re
     ];
     var EM_FILES = [
         {remotename: "EventManager/tests.c", localname: "tests.c", branch: "EventManager"},
-        {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "EventManager"}
+        {remotename: "EventManager/libpriority_queue.a", localname: "libpriority_queue.a", branch: "EventManager"},
+    ];
+    var EM_PQ_FILES = [
+        {remotename: "EventManager/tests.c", localname: "tests.c", branch: "EventManager"},
     ];
     var DATE_FILES = [
         {remotename: "EventManager/date_tests.c", localname: "date_tests.c", branch: "EventManager"},
@@ -267,8 +270,11 @@ router.post('/', createStagingFolder, upload.array('projectFiles'), function (re
             } else if(testType === "em"){
                 let file = EM_FILES[0];
                 testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
-            } else {
+            } else if (testType === "date") {
                 let file = DATE_FILES[0];
+                testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
+            } else if (testType === "em-pq") {
+                let file = EM_PQ_FILES[0];
                 testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
             }
             res.render("index", {error: {}, output: output, testPath: testPath});
