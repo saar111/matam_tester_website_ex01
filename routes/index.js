@@ -49,14 +49,17 @@ function createStagingFolder(req, res, next) {
 
 function pullTests(testType, stagingId, cb) {
     // REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
+    // REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
     var PQ_FILES = [
         {remotename: "PriorityQueue/tests.c", localname: "tests.c", branch: "PriorityQueue"},
         {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}
     ];
     var EM_FILES = [
         {remotename: "EventManager/tests.c", localname: "tests.c", branch: "EventManager"},
-        {remotename: "EventManager/libpriority_queue.a", localname: "libpriority_queue.a", branch: "EventManager"},
-        {remotename: "EventManager/priority_queue.h", localname: "priority_queue.h", branch: "EventManager"}
+        {remotename: "PriorityQueue/priority_queue.h", localname: "priority_queue.h", branch: "PriorityQueue"},
+        {remotename: "PriorityQueue/priority_queue.c", localname: "priority_queue.c", branch: "PriorityQueue"},
+        {remotename: "PriorityQueue/double_linked_list.c", localname: "double_linked_list.c", branch: "PriorityQueue"},
+        {remotename: "PriorityQueue/double_linked_list.h", localname: "double_linked_list.h", branch: "PriorityQueue"},
     ];
     var EM_PQ_FILES = [
         {remotename: "EventManager/tests.c", localname: "tests.c", branch: "EventManager"},
