@@ -105,7 +105,7 @@ function getTestCount(stagingId) {
 }
 
 function isValgrindFailure(tempLogName) {
-    let valgrindOutput = fs.readFileSync("../../public/" + tempLogName);
+    let valgrindOutput = fs.readFileSync("./public/" + tempLogName);
     var myRegexp = /ERROR SUMMARY: (\d+) errors/g;
     let match = myRegexp.exec(valgrindOutput);
     try {
