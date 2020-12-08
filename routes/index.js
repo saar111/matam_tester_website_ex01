@@ -175,7 +175,9 @@ function runTests(stagingId, cb) {
         }
 
         if (!error) {
-            cb([({testOutput: stdout, valgrindOutputPath: "/" + tempLogName, valgrindMessage: valgrindMessage})]);
+            exec("ps -ef | grep valgrind.bin | grep -v grep | awk '{print $2}' | xargs kill", function () {
+                cb([({testOutput: stdout, valgrindOutputPath: "/" + tempLogName, valgrindMessage: valgrindMessage})])
+            });
         } else {
             exec("ps -ef | grep valgrind.bin | grep -v grep | awk '{print $2}' | xargs kill", function () {
                 cb([({
