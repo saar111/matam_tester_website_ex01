@@ -68,11 +68,11 @@ function pullTests(testType, stagingId, cb) {
 
     if (testType === "pq") {
         updateFiles(PQ_FILES, stagingId, cb);
-    } else if(testType === "em"){
+    } else if (testType === "em") {
         updateFiles(EM_FILES, stagingId, cb);
-    } else if(testType === "date") {
+    } else if (testType === "date") {
         updateFiles(DATE_FILES, stagingId, cb);
-    } else if(testType === "em-pq") {
+    } else if (testType === "em-pq") {
         updateFiles(EM_PQ_FILES, stagingId, cb);
     }
 }
@@ -120,10 +120,10 @@ function isValgrindFailure(tempLogName) {
     }
 }
 
-function execShellCommand(cmd) {
+function execShellCommand(cmd, stagingId) {
     const exec = require('child_process').exec;
     return new Promise((resolve, reject) => {
-        exec(cmd, {timeout: (1000 * 10)}, (error, stdout, stderr) => {
+        exec(cmd, {timeout: (1000 * 10), cwd: `./staging/${stagingId}`}, (error, stdout, stderr) => {
             resolve([error, stdout, stderr]);
         });
     });
@@ -135,10 +135,9 @@ function _runTests(testNumber, maxTestsNumber, stagingId, output, cb) {
         return;
     }
 
-
     let tempLogName = `valgrind-test-${testNumber}-${makeid(15)}.out.txt`;
     const EXEC_TEST_NUMBER = `valgrind --leak-check=full --show-leak-kinds=all --log-file="./public/${tempLogName}" ./staging/${stagingId}/compiled_program ${testNumber}`;
-    exec(EXEC_TEST_NUMBER, {timeout: (1000 * 10)}, function (error, stdout, stderr) {
+    exec(EXEC_TEST_NUMBER, {timeout: (1000 * 10), cwd: `./staging/${stagingId}`}, function (error, stdout, stderr) {
         if (!error) {
             let isValgrindFailureResult = isValgrindFailure(tempLogName);
             let valgrindMessage = "";
@@ -162,8 +161,8 @@ function _runTests(testNumber, maxTestsNumber, stagingId, output, cb) {
 
 function runTests(stagingId, cb) {
     let tempLogName = `valgrind-test-${makeid(15)}.out.txt`;
-    const EXEC_TEST_NUMBER = `valgrind --leak-check=full --show-leak-kinds=all --log-file="./public/${tempLogName}" ./staging/${stagingId}/compiled_program`;
-    exec(EXEC_TEST_NUMBER, {timeout: (1000 * 40)}, function (error, stdout, stderr) {
+    const EXEC_TEST_NUMBER = `valgrind --leak-check=full --show-leak-kinds=all --log-file="../../public/${tempLogName}" compiled_program`;
+    exec(EXEC_TEST_NUMBER, {timeout: (1000 * 10), cwd: `./staging/${stagingId}`}, function (error, stdout, stderr) {
         let isValgrindFailureResult = isValgrindFailure(tempLogName);
         let valgrindMessage = "";
         if (isValgrindFailureResult >= 1) {
@@ -171,15 +170,8 @@ function runTests(stagingId, cb) {
         } else if (isValgrindFailureResult === "UNKNOWN") {
             valgrindMessage = "<b>Valgrind</b> status unknown, please look manually at output file";
         }
-        if (!error) {
-            let isValgrindFailureResult = isValgrindFailure(tempLogName);
-            let valgrindMessage = "";
-            if (isValgrindFailureResult >= 1) {
-                valgrindMessage = "<b>Valgrind</b> has found " + isValgrindFailureResult + " error(s), check full output file";
-            } else if (isValgrindFailureResult === "UNKNOWN") {
-                valgrindMessage = "<b>Valgrind</b> status unknown, please look manually at output file";
-            }
 
+        if (!error) {
             cb([({testOutput: stdout, valgrindOutputPath: "/" + tempLogName, valgrindMessage: valgrindMessage})]);
         } else {
             exec("ps -ef | grep valgrind.bin | grep -v grep | awk '{print $2}' | xargs kill", function () {
@@ -252,8 +244,10 @@ router.post('/', createStagingFolder, upload.array('projectFiles'), function (re
     ];
     var EM_FILES = [
         {remotename: "EventManager/tests.c", localname: "tests.c", branch: "EventManager"},
-        {remotename: "EventManager/libpriority_queue.a", localname: "libpriority_queue.a", branch: "EventManager"},
-        {remotename: "EventManager/priority_queue.h", localname: "priority_queue.h", branch: "EventManager"}
+        {remotename: "PriorityQueue/priority_queue.h", localname: "priority_queue.h", branch: "PriorityQueue"},
+        {remotename: "PriorityQueue/priority_queue.c", localname: "priority_queue.c", branch: "PriorityQueue"},
+        {remotename: "PriorityQueue/double_linked_list.c", localname: "double_linked_list.c", branch: "PriorityQueue"},
+        {remotename: "PriorityQueue/double_linked_list.h", localname: "double_linked_list.h", branch: "PriorityQueue"},
     ];
     var EM_PQ_FILES = [
         {remotename: "EventManager/tests.c", localname: "tests.c", branch: "EventManager"},
@@ -274,7 +268,7 @@ router.post('/', createStagingFolder, upload.array('projectFiles'), function (re
             if (testType === "pq") {
                 let file = PQ_FILES[0];
                 testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
-            } else if(testType === "em"){
+            } else if (testType === "em") {
                 let file = EM_FILES[0];
                 testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
             } else if (testType === "date") {
