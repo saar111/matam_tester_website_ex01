@@ -55,7 +55,10 @@ function pullTests(testType, stagingId, cb) {
     ];
     var EM_FILES = [
         {remotename: "EventManager/tests.c", localname: "tests.c", branch: "EventManager"},
-        {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "EventManager"}
+        {remotename: "EventManager/libpriority_queue.a", localname: "libpriority_queue.a", branch: "EventManager"},
+    ];
+    var EM_PQ_FILES = [
+        {remotename: "EventManager/tests.c", localname: "tests.c", branch: "EventManager"},
     ];
     var DATE_FILES = [
         {remotename: "EventManager/date_tests.c", localname: "date_tests.c", branch: "EventManager"},
@@ -66,17 +69,19 @@ function pullTests(testType, stagingId, cb) {
         updateFiles(PQ_FILES, stagingId, cb);
     } else if(testType === "em"){
         updateFiles(EM_FILES, stagingId, cb);
-    } else {
+    } else if(testType === "date") {
         updateFiles(DATE_FILES, stagingId, cb);
+    } else if(testType === "em-pq") {
+        updateFiles(EM_PQ_FILES, stagingId, cb);
     }
 }
 
 function compileCode(testType, stagingId, cb) {
     const GCC_COMPILE_TEMPLATE = `gcc -g -std=c99 -o staging/${stagingId}/compiled_program -Wall -pedantic-errors -Werror staging/${stagingId}/*.c`;
-    const GCC_COMPILE_EM = `gcc -g -std=c99 -o staging/${stagingId}/compiled_program -Wall -pedantic-errors -Werror staging/${stagingId}/*.c`;
+    const GCC_COMPILE_EM_ALONE = `gcc -g -std=c99 -o staging/${stagingId}/compiled_program -Wall -pedantic-errors -Werror -Lstaging -llibpriority_queue.a staging/${stagingId}/*.c`;
     pullTests(testType, stagingId, function () {
         if (testType === "em") {
-            exec(GCC_COMPILE_TEMPLATE, function (error, stdout, stderr) {
+            exec(GCC_COMPILE_EM_ALONE, function (error, stdout, stderr) {
                 cb(error, stdout, stderr);
             });
         } else {
