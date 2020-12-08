@@ -56,6 +56,7 @@ function pullTests(testType, stagingId, cb) {
     var EM_FILES = [
         {remotename: "EventManager/tests.c", localname: "tests.c", branch: "EventManager"},
         {remotename: "EventManager/libpriority_queue.a", localname: "libpriority_queue.a", branch: "EventManager"},
+        {remotename: "EventManager/priority_queue.h", localname: "priority_queue.h", branch: "EventManager"}
     ];
     var EM_PQ_FILES = [
         {remotename: "EventManager/tests.c", localname: "tests.c", branch: "EventManager"},
@@ -252,6 +253,7 @@ router.post('/', createStagingFolder, upload.array('projectFiles'), function (re
     var EM_FILES = [
         {remotename: "EventManager/tests.c", localname: "tests.c", branch: "EventManager"},
         {remotename: "EventManager/libpriority_queue.a", localname: "libpriority_queue.a", branch: "EventManager"},
+        {remotename: "EventManager/priority_queue.h", localname: "priority_queue.h", branch: "EventManager"}
     ];
     var EM_PQ_FILES = [
         {remotename: "EventManager/tests.c", localname: "tests.c", branch: "EventManager"},
