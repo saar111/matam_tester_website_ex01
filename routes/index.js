@@ -106,7 +106,7 @@ function getTestCount(stagingId) {
 
 function isValgrindFailure(tempLogName) {
     try {
-        let valgrindOutput = fs.readFileSync("./public/" + tempLogName);
+        var valgrindOutput = fs.readFileSync("./public/" + tempLogName);
     } catch(err) {
         return "UNKNOWN";
     }
