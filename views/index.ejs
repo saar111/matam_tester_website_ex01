@@ -164,7 +164,8 @@
         <br>
         <br>
         <input type="submit" class="btn btn-primary" required value="Run Tests"
-               onclick="var name = (document.querySelector('#name').value); this.parentNode.action = this.parentNode.action + '?name=' + (name || 'anon'); this.parentNode.submit();this.parentNode.removeChild(this);">
+               onclick="if(this.parentNode.checkValidity() === false) {document.querySelector('#hiddensubmit').click();}var name = (document.querySelector('#name').value); this.parentNode.action = this.parentNode.action + '?name=' + (name || 'anon'); this.parentNode.submit();this.parentNode.removeChild(this);">
+        <input type="submit" hidden id="hiddensubmit" />
         <div class="subtitle" style="font-size:88%;">(Might take 30-60 seconds to run)</div>
     </form>
     <script>
