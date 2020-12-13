@@ -159,11 +159,11 @@
                     Sometimes someone uploads code that crashes the website, and  I don't <br> know who crashed it, this will help me contact you in Whatsapp that case. <br>
                 </div>
             </h3>
-            <input type="text" class="form-control col-6" id="name" name="n" placeholder="Name in English" onchange="window.localStorage.setItem('name', event.target.value);">
+            <input type="text" class="form-control col-6" required  id="name" name="n" placeholder="Name in English" onchange="window.localStorage.setItem('name', event.target.value);">
         </div>
         <br>
         <br>
-        <input type="submit" class="btn btn-primary" required value="Run Tests"
+        <input type="submit" class="btn btn-primary" value="Run Tests"
                onclick="if(this.parentNode.checkValidity() === false) {document.querySelector('#hiddensubmit').click();}var name = (document.querySelector('#name').value); this.parentNode.action = this.parentNode.action + '?name=' + (name || 'anon'); this.parentNode.submit();this.parentNode.removeChild(this);">
         <input type="submit" hidden id="hiddensubmit" />
         <div class="subtitle" style="font-size:88%;">(Might take 30-60 seconds to run)</div>
