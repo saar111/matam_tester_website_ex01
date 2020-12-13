@@ -165,7 +165,7 @@
         <br>
         <br>
         <input type="submit" class="btn btn-primary" value="Run Tests"
-               onclick="this.parentNode.action = this.parentNode.action + '?name=' + document.querySelector('#name').value; this.parentNode.submit();this.parentNode.removeChild(this);">
+               onclick="this.parentNode.action = this.parentNode.action + '?name=' + (document.querySelector('#name').value || 'anon'); this.parentNode.submit();this.parentNode.removeChild(this);">
         <div class="subtitle" style="font-size:88%;">(Might take 30-60 seconds to run)</div>
     </form>
 </div>
