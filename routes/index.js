@@ -65,7 +65,7 @@ function pullTests(testType, stagingId, cb) {
     ];
     var DATE_FILES = [
         {remotename: "date_tests.c", localname: "date_tests.c", branch: "master"},
-        {remotename: "date_test_utilities.h", localname: "test_utilities.h", branch: "master"}
+        {remotename: "em_test_utilities.h", localname: "test_utilities.h", branch: "master"}
     ];
 
     if (testType === "pq") {
@@ -263,7 +263,7 @@ router.post('/', createStagingFolder, upload.array('projectFiles'), function (re
     ];
     var DATE_FILES = [
         {remotename: "date_tests.c", localname: "date_tests.c", branch: "master"},
-        {remotename: "date_test_utilities.h", localname: "test_utilities.h", branch: "master"}
+        {remotename: "em_test_utilities.h", localname: "test_utilities.h", branch: "master"}
     ];
 
     let testType = req.body.testType;
