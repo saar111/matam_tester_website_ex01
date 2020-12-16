@@ -26,7 +26,7 @@ function makeid(length) {
 }
 
 function pullFile(file, stagingId, cb) {
-    exec("wget --no-cache --no-cookies https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename + "?" + Math.random() + ` -O staging/${stagingId}/` + file.localname, cb);
+    exec("wget --no-cache --no-cookies https://raw.githubusercontent.com/saar111/MTM_EX01_TESTS/" + file.branch + "/" + file.remotename + "?" + Math.random() + ` -O staging/${stagingId}/` + file.localname, cb);
 }
 
 function updateFiles(files, stagingId, cb) {
@@ -51,22 +51,22 @@ function pullTests(testType, stagingId, cb) {
     // REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
     // REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
     var PQ_FILES = [
-        {remotename: "PriorityQueue/tests.c", localname: "tests.c", branch: "PriorityQueue"},
-        {remotename: "PriorityQueue/test_utilities.h", localname: "test_utilities.h", branch: "PriorityQueue"}
+        {remotename: "pq_tests.c", localname: "tests.c", branch: "master"},
+        {remotename: "pq_test_utilities.h", localname: "test_utilities.h", branch: "master"}
     ];
     var EM_FILES = [
-        {remotename: "EventManager/tests.c", localname: "tests.c", branch: "EventManager"},
-        {remotename: "PriorityQueue/priority_queue.h", localname: "priority_queue.h", branch: "PriorityQueue"},
-        {remotename: "PriorityQueue/priority_queue.c", localname: "priority_queue.c", branch: "PriorityQueue"},
-        {remotename: "PriorityQueue/double_linked_list.c", localname: "double_linked_list.c", branch: "PriorityQueue"},
-        {remotename: "PriorityQueue/double_linked_list.h", localname: "double_linked_list.h", branch: "PriorityQueue"},
+        {remotename: "em_tests.c", localname: "tests.c", branch: "master"},
+        {remotename: "priority_queue.h", localname: "priority_queue.h", branch: "master"},
+        {remotename: "priority_queue.c", localname: "priority_queue.c", branch: "master"},
+        {remotename: "double_linked_list.c", localname: "double_linked_list.c", branch: "master"},
+        {remotename: "double_linked_list.h", localname: "double_linked_list.h", branch: "master"},
     ];
     var EM_PQ_FILES = [
-        {remotename: "EventManager/tests.c", localname: "tests.c", branch: "EventManager"},
+        {remotename: "em_tests.c", localname: "tests.c", branch: "master"},
     ];
     var DATE_FILES = [
-        {remotename: "EventManager/date_tests.c", localname: "date_tests.c", branch: "EventManager"},
-        {remotename: "EventManager/test_utilities.h", localname: "test_utilities.h", branch: "EventManager"}
+        {remotename: "date_tests.c", localname: "date_tests.c", branch: "master"},
+        {remotename: "date_test_utilities.h", localname: "test_utilities.h", branch: "master"}
     ];
 
     if (testType === "pq") {
