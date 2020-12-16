@@ -276,16 +276,16 @@ router.post('/', createStagingFolder, upload.array('projectFiles'), function (re
             var testPath
             if (testType === "pq") {
                 let file = PQ_FILES[0];
-                testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
+                testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01_TESTS/" + file.branch + "/" + file.remotename;
             } else if (testType === "em") {
                 let file = EM_FILES[0];
-                testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
+                testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01_TESTS/" + file.branch + "/" + file.remotename;
             } else if (testType === "date") {
                 let file = DATE_FILES[0];
-                testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
+                testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01_TESTS/" + file.branch + "/" + file.remotename;
             } else if (testType === "em-pq") {
                 let file = EM_PQ_FILES[0];
-                testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01/" + file.branch + "/" + file.remotename;
+                testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01_TESTS/" + file.branch + "/" + file.remotename;
             }
             res.render("index", {error: {}, output: output, testPath: testPath, stagingId: req.stagingId});
         });
