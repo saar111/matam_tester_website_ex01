@@ -178,10 +178,15 @@ function runTests(stagingId, cb) {
         }
 
         if (!error) {
-            exec("ps -ef | grep valgrind.bin | grep -v grep | awk '{print $2}' | xargs kill", function () {
-                cb([({testOutput: stdout, valgrindOutputPath: "/" + tempLogName, valgrindMessage: valgrindMessage})])
-            });
+			if(Math.random() < 0.01) {
+				exec("ps -ef | grep valgrind.bin | grep -v grep | awk '{print $2}' | xargs kill", function () {
+					cb([({testOutput: stdout, valgrindOutputPath: "/" + tempLogName, valgrindMessage: valgrindMessage})]);
+				});
+			} else {
+				cb([({testOutput: stdout, valgrindOutputPath: "/" + tempLogName, valgrindMessage: valgrindMessage})]);
+			}
         } else {
+
             exec("ps -ef | grep valgrind.bin | grep -v grep | awk '{print $2}' | xargs kill", function () {
                 cb([({
                     testOutput: stdout + "<br><b class='valgrind-failure'>The testing has encountered an error that has stopped the code from running further.</b><br>" +
