@@ -129,7 +129,7 @@ function isValgrindFailure(tempLogName) {
 function execShellCommand(cmd, stagingId) {
     const exec = require('child_process').exec;
     return new Promise((resolve, reject) => {
-        exec(cmd, {timeout: (1000 * 10), cwd: `./staging/${stagingId}`}, (error, stdout, stderr) => {
+        exec(cmd, {timeout: (1000 * 17), cwd: `./staging/${stagingId}`}, (error, stdout, stderr) => {
             resolve([error, stdout, stderr]);
         });
     });
