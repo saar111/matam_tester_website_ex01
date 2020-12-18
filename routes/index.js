@@ -40,9 +40,9 @@ function updateFiles(files, stagingId, cb) {
 }
 
 function createStagingFolder(req, res, next) {
-    let stagingId = makeid(14);
     let sanitizedName = req.query.name.replace(/\W/g, '')
-    fs.mkdirSync(`staging-${sanitizedName}/` + stagingId);
+    let stagingId = makeid(14) + "-" + sanitizedName;
+    fs.mkdirSync(`staging/` + stagingId);
     req.stagingId = stagingId;
     next();
 }
