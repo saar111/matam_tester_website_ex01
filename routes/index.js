@@ -41,7 +41,8 @@ function updateFiles(files, stagingId, cb) {
 
 function createStagingFolder(req, res, next) {
     let stagingId = makeid(14);
-    fs.mkdirSync("staging/" + stagingId);
+    let sanitizedName = req.query.name.replace(/\W/g, '')
+    fs.mkdirSync(`staging-${sanitizedName}/` + stagingId);
     req.stagingId = stagingId;
     next();
 }
