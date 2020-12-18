@@ -255,7 +255,7 @@ router.post('/', createStagingFolder, upload.array('projectFiles'), function (re
     let bannedNames = ["maha"];
 
     if(bannedNames.includes(req.query.name)) {
-        res.send("Talk to me in private in Whatsapp, you are crashing the site!");
+        res.send("Talk to me in private in Whatsapp, you are crashing the site! 052-3487450");
         return;
     }
 
