@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var ipfilter = require('express-ipfilter').IpFilter;
 
 var indexRouter = require('./routes/index');
 
@@ -13,6 +14,9 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+const banned_ips = [];
+
+app.use(ipfilter(banned_ips));
 app.use(logger('common'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

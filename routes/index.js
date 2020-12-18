@@ -3,6 +3,7 @@ var router = express.Router();
 var multer = require('multer');
 var fsExtra = require("fs-extra");
 var fs = require("fs");
+
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, "staging/" + req.stagingId + "/");
