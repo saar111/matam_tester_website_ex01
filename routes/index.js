@@ -131,7 +131,7 @@ function isValgrindFailure(tempLogName) {
 function execShellCommand(cmd, stagingId) {
     const exec = require('child_process').exec;
     return new Promise((resolve, reject) => {
-        exec(cmd, {timeout: (1000 * 17), cwd: `./staging/${stagingId}`}, (error, stdout, stderr) => {
+        exec(cmd, {timeout: (1000 * 7), cwd: `./staging/${stagingId}`}, (error, stdout, stderr) => {
             resolve([error, stdout, stderr]);
         });
     });
@@ -180,7 +180,7 @@ function runTests(stagingId, cb) {
         }
 
         if (!error) {
-			if(Math.random() < 0.01) {
+			if(Math.random() < 0.3) {
 				exec("ps -ef | grep valgrind.bin | grep -v grep | awk '{print $2}' | xargs kill", function () {
 					cb([({testOutput: stdout, valgrindOutputPath: "/" + tempLogName, valgrindMessage: valgrindMessage})]);
 				});
@@ -252,6 +252,11 @@ function runTests(stagingId, cb) {
 
 
 router.post('/', createStagingFolder, upload.array('projectFiles'), function (req, res) {
+    try {
+        console.log(`POST request received: name: ${req.query.name}, IP: ${req.connection.remoteAddress}`);
+    } catch(err) {
+        console.log(`POST request received: IP: ${req.connection.remoteAddress}`);
+    }
     // REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
     // REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
     var PQ_FILES = [
