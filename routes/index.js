@@ -254,15 +254,15 @@ function runTests(stagingId, cb) {
 router.post('/', createStagingFolder, upload.array('projectFiles'), function (req, res) {
     let bannedNames = ["maha"];
 
-    if(bannedNames.includes(req.query.name)) {
-        res.send("Talk to me in private in Whatsapp, you are crashing the site! 052-3487450");
-        return;
-    }
 
     try {
         console.log(`POST request received: name: ${req.query.name}, IP: ${req.connection.remoteAddress}`);
     } catch(err) {
         console.log(`POST request received: IP: ${req.connection.remoteAddress}`);
+    }
+    if(bannedNames.includes(req.query.name)) {
+        res.send("Talk to me in private in Whatsapp, you are crashing the site! 052-3487450");
+        return;
     }
     // REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
     // REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
