@@ -170,7 +170,7 @@ function _runTests(testNumber, maxTestsNumber, stagingId, output, cb) {
 function runTests(stagingId, cb) {
     let tempLogName = `valgrind-test-${makeid(15)}.out.txt`;
     const EXEC_TEST_NUMBER = `nice valgrind --max-stackframe=800000 --leak-check=full --show-leak-kinds=all --log-file="../../public/${tempLogName}" ./compiled_program`;
-    exec(EXEC_TEST_NUMBER, {timeout: (1000 * 10), cwd: `./staging/${stagingId}`}, function (error, stdout, stderr) {
+    exec(EXEC_TEST_NUMBER, {timeout: (1000 * 7), cwd: `./staging/${stagingId}`}, function (error, stdout, stderr) {
         let isValgrindFailureResult = isValgrindFailure(tempLogName);
         let valgrindMessage = "";
         if (isValgrindFailureResult >= 1) {
