@@ -254,7 +254,7 @@ function runTests(stagingId, cb) {
 router.post('/', createStagingFolder, upload.array('projectFiles'), function (req, res) {
     let bannedNames = ["maha"];
 
-    if(req.query.name in bannedNames) {
+    if(bannedNames.includes(req.query.name)) {
         res.send("Talk to me in private in Whatsapp, you are crashing the site!");
         return;
     }
