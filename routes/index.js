@@ -253,7 +253,7 @@ function runTests(stagingId, cb) {
 
 router.post('/', createStagingFolder, upload.array('projectFiles'), function (req, res) {
     let bannedNames = ["maha", "ruba"];
-    let bannedIps = ["79.181.105.200"];
+    let bannedIps = ["::ffff:79.181.105.200"];
 
 
     try {
@@ -265,7 +265,6 @@ router.post('/', createStagingFolder, upload.array('projectFiles'), function (re
         res.send("Talk to me in private in Whatsapp, you are crashing the site! 052-3487450");
         return;
     }
-    // REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
     // REMEMBER TO UPDATE IN THE OTHER PLACE (DOWN THIS FILE)
     var PQ_FILES = [
         {remotename: "pq_tests.c", localname: "tests.c", branch: "master"},
