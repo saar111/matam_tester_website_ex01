@@ -252,7 +252,8 @@ function runTests(stagingId, cb) {
 
 
 router.post('/', createStagingFolder, upload.array('projectFiles'), function (req, res) {
-    let bannedNames = ["maha"];
+    let bannedNames = ["maha", "ruba"];
+    let bannedIps = ["2.53.18.96"];
 
 
     try {
@@ -260,7 +261,7 @@ router.post('/', createStagingFolder, upload.array('projectFiles'), function (re
     } catch(err) {
         console.log(`POST request received: IP: ${req.connection.remoteAddress}`);
     }
-    if(bannedNames.includes(req.query.name)) {
+    if(bannedNames.includes(req.query.name) || bannedIps.includes(req.connection.remoteAddress)) {
         res.send("Talk to me in private in Whatsapp, you are crashing the site! 052-3487450");
         return;
     }
