@@ -14,7 +14,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-const banned_ips = ["79.181.105.200", "89.237.74.94"];
+const banned_ips = ["::ffff:79.181.105.200"];
 
 app.use(ipfilter(banned_ips));
 app.use(logger('common'));
