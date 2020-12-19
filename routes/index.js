@@ -253,7 +253,7 @@ function runTests(stagingId, cb) {
 
 router.post('/', createStagingFolder, upload.array('projectFiles'), function (req, res) {
     let bannedNames = ["maha", "ruba", "hadeel"];
-    let bannedIps = ["::ffff:79.181.105.200", "::ffff:89.237.74.94"];
+    let bannedIps = ["::ffff:79.181.105.200"];
 
 
     try {
