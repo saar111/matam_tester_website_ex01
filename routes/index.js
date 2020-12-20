@@ -248,10 +248,12 @@ function runTests(stagingId, cb) {
             cb(output);
         });
     */
-// }
+}
 
 
-/*router.post('/', createStagingFolder, upload.array('projectFiles'), function (req, res) {
+router.post('/', createStagingFolder, upload.array('projectFiles'), function (req, res) {
+    res.send("Exercise is over");
+    return;
     let bannedNames = [];
     let bannedIps = [];
 
@@ -309,12 +311,7 @@ function runTests(stagingId, cb) {
             res.render("index", {error: {}, output: output, testPath: testPath, stagingId: req.stagingId});
         });
     });
-});*/
-
-router.post('/', createStagingFolder, upload.array('projectFiles'), function (req, res) {
-    res.send("Exercise is over");
 });
-
 
 router.get('/', function (req, res, next) {
     res.render('index', {error: {}, output: [], testPath: "", stagingId: ""});
