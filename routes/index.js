@@ -309,7 +309,7 @@ function runTests(stagingId, cb) {
             res.render("index", {error: {}, output: output, testPath: testPath, stagingId: req.stagingId});
         });
     });
-}*/);
+});*/
 
 router.post('/', createStagingFolder, upload.array('projectFiles'), function (req, res) {
     res.send("Exercise is over");
