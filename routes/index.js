@@ -252,8 +252,6 @@ function runTests(stagingId, cb) {
 
 
 router.post('/', createStagingFolder, upload.array('projectFiles'), function (req, res) {
-    res.send("Exercise is over");
-    return;
     let bannedNames = [];
     let bannedIps = [];
 
