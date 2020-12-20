@@ -248,7 +248,7 @@ function runTests(stagingId, cb) {
             cb(output);
         });
     */
-}
+// }
 
 
 /*router.post('/', createStagingFolder, upload.array('projectFiles'), function (req, res) {
