@@ -41,7 +41,7 @@ function updateTests(testType, cb) {
 }
 
 function runTests(stagingId, cb) {
-    exec("python3 ./test_runner.py", {timeout: 1000 * 30, cwd: "./ex02/staging/" + stagingId + "/"}, cb);
+    exec("python3 ./test_runner.py", {timeout: 1000 * 20, cwd: "./ex02/staging/" + stagingId + "/"}, cb);
 }
 
 function blockUnallowed(req, res, next) {
@@ -66,6 +66,7 @@ function setupStagingArea(stagingId) {
             if(src.includes(".git")){
                 return false;
             }
+            return true;
         }
     });
 }
