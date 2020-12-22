@@ -63,10 +63,7 @@ function blockUnallowed(req, res, next) {
 function setupStagingArea(stagingId) {
     fse.copySync("ex02/tests", `ex02/staging/${stagingId}`, {
         filter: (src, dest) => {
-            if (src.includes(".git")) {
-                return false;
-            }
-            return true;
+            return !src.includes(".git");
         }
     });
 }
