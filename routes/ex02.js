@@ -35,7 +35,7 @@ function createStagingFolder(req, res, next) {
 }
 
 function updateTests(testType, cb) {
-    exec("git pull", {cwd: "./ex02/tests"}, function() {
+    exec("git pull", {cwd: "./ex02/tests"}, function () {
         cb();
     });
 }
@@ -61,12 +61,18 @@ function blockUnallowed(req, res, next) {
 }
 
 function setupStagingArea(stagingId) {
-    fse.copySync("ex02/tests", `ex02/staging/${stagingId}`);
+    fse.copySync("ex02/tests", `ex02/staging/${stagingId}`, {
+        filter: (src, dest) => {
+            if(src.includes(".git")){
+                return false;
+            }
+        }
+    });
 }
 
 router.post('/', blockUnallowed, createStagingFolder, upload.array('projectFiles'), function (req, res) {
     let testType = req.body.testType;
-    updateTests(testType, function(){
+    updateTests(testType, function () {
         setupStagingArea(req.stagingId);
         runTests(req.stagingId, function (err, stdout, stderr) {
             res.render("ex02", {tests_output: stdout, stagingId: req.stagingId});
