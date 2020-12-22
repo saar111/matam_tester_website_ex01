@@ -60,9 +60,8 @@ function blockUnallowed(req, res, next) {
     }
 }
 
-function setupStagingArea(stagingId, cb) {
+function setupStagingArea(stagingId) {
     fse.copySync("ex02/tests", `ex02/staging/${stagingId}`);
-    cb();
 }
 
 router.post('/', blockUnallowed, createStagingFolder, upload.array('projectFiles'), function (req, res) {
