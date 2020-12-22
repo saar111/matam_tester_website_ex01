@@ -34,7 +34,7 @@ function createStagingFolder(req, res, next) {
     next();
 }
 
-function updateTests(cb) {
+function updateTests(testType, cb) {
     exec("git pull", {cwd: "./ex02/tests"}, function() {
         cb();
     });
