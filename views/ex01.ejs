@@ -1,0 +1,178 @@
+<html>
+<head>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<style>
+    body {
+        padding: 15px;
+    }
+
+    hr {
+        border-top: 1px solid rgb(0 0 0 / 78%) !important;
+    }
+
+    .subtitle {
+        font-weight: 400;
+        font-size: 50%;
+        color: grey;
+    }
+
+    .seperator {
+        position: relative;
+        display: block;
+        margin: 20px 0;
+        border-bottom: 1px solid grey;
+        width: 450px;
+    }
+
+    .valgrind-success {
+        color: green;
+    }
+
+    .success {
+        color: green;
+    }
+
+    .valgrind-failure {
+        color: red;
+    }
+
+    .notice-start-header {
+        background: #383838;
+        display: inline-block;
+        color: white;
+        padding: 13px 12px;
+    }
+
+    .my-container {
+        display: inline-block;
+        position: absolute;
+        max-width: 735px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .test-file-header {
+        border: 2px solid #50b761;
+        padding: 8px 16px 11px 16px;
+    }
+
+    .tests-output {
+    }
+
+</style>
+
+<body>
+<div class="my-container">
+    <div>
+        <% if (error && error.toString() !== "[object Object]") { %>
+            <div style="font-family: monospace">
+                <%- "<h2>Compliation Error, Details:</h2>" %>
+                <%- error.toString().replace(/\n/g, "<br>").replace(/ /g, "&nbsp;") %>
+                <%- "<br></br><hr></br>" %>
+            </div>
+        <% } else if (output && output.length !== 0) { %>
+            <h2 class="test-file-header">Running test file: <a target="_blank" href="<%- testPath %>">tests.c</a>
+                <div class="subtitle">(Use this file to understand why your code failed a certain test)</div>
+            </h2>
+            <br> <br>
+
+            <div class="tests-output">
+                <% output.forEach(function(test_info){ %>
+                    <%- test_info.testOutput.replace(/\n/g, "<br>").replace(/\[OK\]/g, "<span class='success'>[OK]</span>").replace(/\+ Running/g, "<br><hr>+ Running").replace(/\[Failed\]/g, "<span class='valgrind-failure'>[Failed]</span>").replace(/\{STAGING_ID\}/g, stagingId) %>
+                    <br>
+                    <% if(test_info.valgrindMessage !== "") { %>
+                        <br>
+                        <%- '<div class="valgrind-failure">' + test_info.valgrindMessage + '</div>' %>
+                        <%- '<a target="_blank" href="' + test_info.valgrindOutputPath + '">full_valgrind_output.txt</a>' %>
+                    <% } else { %>
+                        <%- '<div><b class="valgrind-success">Valgrind</b> ran successfully (no leaks found)</div>' %>
+                    <% } %>
+
+
+                    <%- "<div class='seperator'></div>" %>
+                <% }); %>
+            </div>
+            <%- "<br></br><hr></br>" %>
+        <% } else { %>
+            <div class="notice-start-header">
+                <p>Notice! <br><br>
+                    This website was not officially made by the Matam course, so take the tests here with a grain of
+                    salt.</p>
+                Also, make sure you know how to compile your code alone and test it by yourself,<br>
+                it will probably be more important in later assignments / might show up in the test.
+
+                <br><br>
+                Good luck!
+
+                <br><br>
+                Tests on Priority Queue:
+                <a target="_blank"
+                   href="https://raw.githubusercontent.com/saar111/MTM_EX01_TESTS/master/pq_tests.c">tests.c</a>
+                <br>
+                Tests on date.c:
+                    <a target="_blank"
+                       href="https://raw.githubusercontent.com/saar111/MTM_EX01_TESTS/master/date_tests.c">date_tests.c</a>
+                <br>
+                <b style="color: lightgreen">Tests on Event Manager:
+                    <a target="_blank"
+                       href="https://raw.githubusercontent.com/saar111/MTM_EX01_TESTS/master/em_tests.c">tests.c</a>
+                </b>
+            </div>
+        <% } %>
+    </div>
+
+    <br>
+    <br>
+
+    <form action="/" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <h3>
+                <label for="testType">Part to test</label>
+                <div class="subtitle"></div>
+            </h3>
+            <select name="testType" style="width: 500px;" class="form-control col-9" id="testType">
+                <option value="em" selected>Event Manager - Test with my Priority Queue (don't upload pq)</option>
+                <option value="em-pq">Event Manager - Test with your own Priority Queue (upload pq)</option>
+                <option value="date">date.c</option>
+                <option value="pq">Priority Queue</option>
+            </select>
+        </div>
+        <br>
+        <div class="form-group">
+            <h3>
+                <label for="projectFiles">Upload project files (.c + .h)</label>
+                <div class="subtitle">
+                    Example: event_manager.h event_manager.c date.c date.h
+                </div>
+            </h3>
+            <input type="file" class="form-control-file" id="projectFiles" name="projectFiles" value="Project Files"
+                   multiple>
+        </div>
+        <br>
+        <div class="form-group">
+            <h3>
+                <label for="name">Your name</label>
+                <div class="subtitle">
+                    Sometimes someone uploads code that crashes the website, and  I don't <br> know who crashed it, this will help me contact you in Whatsapp in that case. <br>
+                </div>
+            </h3>
+            <input type="text" class="form-control col-6" required id="name" name="n" placeholder="Name in English" onchange="window.localStorage.setItem('name', event.target.value);">
+        </div>
+        <br>
+        <br>
+        <input type="submit" class="btn btn-primary" value="Run Tests"
+               onclick="if(this.parentNode.checkValidity() === false) {document.querySelector('#hiddensubmit').click(); return;}var name = (document.querySelector('#name').value); this.parentNode.action = this.parentNode.action + '?name=' + (name || 'anon'); this.parentNode.submit();this.parentNode.removeChild(this);">
+        <input type="submit" hidden id="hiddensubmit" />
+        <div class="subtitle" style="font-size:88%;">(Might take 30-60 seconds to run)</div>
+    </form>
+    <script>
+        document.querySelector("#name").value = window.localStorage.getItem("name") || "";
+    </script>
+
+</div>
+</body>
+
+</html>

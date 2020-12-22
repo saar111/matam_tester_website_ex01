@@ -203,55 +203,10 @@ function runTests(stagingId, cb) {
             });
         }
     });
-
-
-    /*
-        let testCount = getTestCount(stagingId);
-        let output = [];
-        _runTests(1, testCount, stagingId, output, function () {
-            cb(output);
-        });
-    */
-
-    /*
-        let execs = [];
-        for (let testNumber = 1; testNumber <= testCount; testNumber++) {
-            let tempLogName = `valgrind-test-${testNumber}-${makeid(15)}.out.txt`;
-            const EXEC_TEST_NUMBER = `valgrind --leak-check=full --show-leak-kinds=all --log-file="./public/${tempLogName}" ./staging/${stagingId}/compiled_program ${testNumber}`;
-            let currentExec = execShellCommand(EXEC_TEST_NUMBER);
-            currentExec.then((data) => {
-                let error = data[0];
-                let stdout = data[1];
-                let stderr = data[2];
-                if (!error) {
-                    let isValgrindFailureResult = isValgrindFailure(tempLogName);
-                    let valgrindMessage = "";
-                    if (isValgrindFailureResult >= 1) {
-                        valgrindMessage = "<b>Valgrind</b> has found " + isValgrindFailureResult + " error(s), check full output file";
-                    } else if (isValgrindFailureResult === "UNKNOWN") {
-                        valgrindMessage = "<b>Valgrind</b> status unknown, please look manually at output file";
-                    }
-                    return ({testOutput: stdout, valgrindOutputPath: "/" + tempLogName, valgrindMessage: valgrindMessage});
-                } else {
-                    return ({
-                        testOutput: stdout + "\n\nTest timed out, maybe you have an Infinite Loop",
-                        valgrindOutputPath: "/" + tempLogName,
-                        valgrindMessage: ""
-                    });
-                }
-            });
-            execs.push(currentExec);
-        }
-
-        Promise.all(execs).then((output) => {
-            console.log("OUTPUT: ", output);
-            cb(output);
-        });
-    */
 }
 
 
-router.post('/', createStagingFolder, upload.array('projectFiles'), function (req, res) {
+router.post('/ex01', createStagingFolder, upload.array('projectFiles'), function (req, res) {
     let bannedNames = [];
     let bannedIps = [];
 
@@ -311,8 +266,10 @@ router.post('/', createStagingFolder, upload.array('projectFiles'), function (re
     });
 });
 
-router.get('/', function (req, res, next) {
+router.get('/ex01', function (req, res, next) {
     res.render('index', {error: {}, output: [], testPath: "", stagingId: ""});
 });
+
+router.use("/ex02", require("./ex02"));
 
 module.exports = router;
