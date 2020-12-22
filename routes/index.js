@@ -243,7 +243,7 @@ router.post('/ex01', createStagingFolder, upload.array('projectFiles'), function
     let testType = req.body.testType;
     compileCode(testType, req.stagingId, function (error, stdout, stderr) {
         if (error) {
-            res.render("index", {error: error, output: [], testPath: "", stagingId: req.stagingId});
+            res.render("ex01", {error: error, output: [], testPath: "", stagingId: req.stagingId});
             return;
         }
         runTests(req.stagingId, function (output) {
@@ -261,7 +261,7 @@ router.post('/ex01', createStagingFolder, upload.array('projectFiles'), function
                 let file = EM_PQ_FILES[0];
                 testPath = "https://raw.githubusercontent.com/saar111/MTM_EX01_TESTS/" + file.branch + "/" + file.remotename;
             }
-            res.render("index", {error: {}, output: output, testPath: testPath, stagingId: req.stagingId});
+            res.render("ex01", {error: {}, output: output, testPath: testPath, stagingId: req.stagingId});
         });
     });
 });
