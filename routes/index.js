@@ -267,8 +267,12 @@ router.post('/ex01', createStagingFolder, upload.array('projectFiles'), function
 });
 
 router.get('/ex01', function (req, res, next) {
-    res.render('index', {error: {}, output: [], testPath: "", stagingId: ""});
+    res.render('ex01', {error: {}, output: [], testPath: "", stagingId: ""});
 });
+
+router.get("/", function(req, res) {
+    res.render("index");
+})
 
 router.use("/ex02", require("./ex02"));
 
