@@ -69,7 +69,7 @@ router.post('/', blockUnallowed, createStagingFolder, upload.array('projectFiles
     updateTests(testType, function(){
         setupStagingArea(req.stagingId);
         runTests(req.stagingId, function (tests_output) {
-            res.render("index", {tests_output: tests_output, stagingId: req.stagingId});
+            res.render("ex02", {tests_output: tests_output, stagingId: req.stagingId});
         });
     });
 });
