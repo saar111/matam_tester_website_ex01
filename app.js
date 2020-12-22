@@ -23,6 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/staging", express.static(path.join(__dirname, 'staging')));
+app.use("/ex02", express.static(path.join(__dirname, 'ex02')));
 
 app.use('/', indexRouter);
 
