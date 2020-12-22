@@ -76,8 +76,8 @@ router.post('/', blockUnallowed, createStagingFolder, upload.array('projectFiles
     updateTests(testType, function () {
         setupStagingArea(req.stagingId);
         runTests(req.stagingId, function (err, stdout, stderr) {
-            if (err) {
-                res.render(ex02, {error: err});
+            if (err || stderr) {
+                res.render("ex02", {tests_output: stdout, stagingId: req.stagingId, error: err || stderr});
             } else {
                 res.render("ex02", {tests_output: stdout, stagingId: req.stagingId});
             }
