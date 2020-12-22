@@ -67,7 +67,7 @@ function setupStagingArea(stagingId, cb) {
 
 router.post('/', blockUnallowed, createStagingFolder, upload.array('projectFiles'), function (req, res) {
     let testType = req.body.testType;
-    updateTests(testType, () => {
+    updateTests(testType, function(){
         setupStagingArea(req.stagingId);
         runTests(req.stagingId, function (tests_output) {
             res.render("index", {tests_output: tests_output, stagingId: req.stagingId});
