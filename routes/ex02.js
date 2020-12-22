@@ -63,7 +63,7 @@ function blockUnallowed(req, res, next) {
 function setupStagingArea(stagingId) {
     fse.copySync("ex02/tests", `ex02/staging/${stagingId}`, {
         filter: (src, dest) => {
-            if(src.includes(".git")){
+            if (src.includes(".git")) {
                 return false;
             }
             return true;
@@ -76,7 +76,11 @@ router.post('/', blockUnallowed, createStagingFolder, upload.array('projectFiles
     updateTests(testType, function () {
         setupStagingArea(req.stagingId);
         runTests(req.stagingId, function (err, stdout, stderr) {
-            res.render("ex02", {tests_output: stdout, stagingId: req.stagingId});
+            if (err) {
+                res.render(ex02, {error: err});
+            } else {
+                res.render("ex02", {tests_output: stdout, stagingId: req.stagingId});
+            }
         });
     });
 });
