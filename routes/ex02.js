@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var multer = require('multer');
+var fse = require("fs-extra");
 var fs = require("fs");
+const {exec} = require('child_process');
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -12,7 +14,6 @@ var storage = multer.diskStorage({
     }
 })
 var upload = multer({storage: storage});
-const {exec} = require('child_process');
 
 
 function makeid(length) {
@@ -28,17 +29,19 @@ function makeid(length) {
 function createStagingFolder(req, res, next) {
     let sanitizedName = req.query.name.replace(/\W/g, '')
     let stagingId = makeid(14) + "-" + sanitizedName;
-    fs.mkdirSync(`staging/` + stagingId);
+    fs.mkdirSync(`ex02/staging/` + stagingId);
     req.stagingId = stagingId;
     next();
 }
 
 function updateTests(cb) {
-    cb();
+    exec("git pull", {cwd: "./ex02/tests"}, function() {
+        cb();
+    });
 }
 
 function runTests(stagingId, cb) {
-    exec("python ./test_runner.py", {timeout: 1000 * 30, cwd: "./ex02"}, cb);
+    exec("python ./test_runner.py", {timeout: 1000 * 30, cwd: "./ex02/staging/" + stagingId + "/"}, cb);
 }
 
 function blockUnallowed(req, res, next) {
@@ -57,13 +60,17 @@ function blockUnallowed(req, res, next) {
     }
 }
 
+function setupStagingArea(stagingId, cb) {
+    fse.copySync("ex02/tests", `ex02/staging/${stagingId}`);
+    cb();
+}
+
 router.post('/', blockUnallowed, createStagingFolder, upload.array('projectFiles'), function (req, res) {
     let testType = req.body.testType;
     updateTests(testType, () => {
-        setupStagingArea(req.stagingId, function() {
-            runTests(req.stagingId, function (tests_output) {
-                res.render("index", {tests_output: tests_output});
-            });
+        setupStagingArea(req.stagingId);
+        runTests(req.stagingId, function (tests_output) {
+            res.render("index", {tests_output: tests_output});
         });
     });
 });
