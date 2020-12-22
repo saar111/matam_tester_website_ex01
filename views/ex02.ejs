@@ -73,7 +73,7 @@
             </h2>
             <br><br>
 
-            <%- tests_output.replace(/\n/g, "<br>").replace(/\[OK\]/g, "<span class='success'>[OK]</span>").replace(/\[Failed\]/g, "<span class='failure'>[Failed]</span>").replace(/\{STAGING_ID\}/g, stagingId)%>
+            <%- tests_output.replace(/\n/g, "<br>").replace(/\[OK\]/g, "<span class='success'>[OK]</span>").replace(/\[Failed\]/g, "<span class='failure'>[Failed]</span>").replace(/\{STAGING_ID\}/g, stagingId).replace(/ /g, "&nbsp;") %>
 
         <br><br><br>
         <% } %>
