@@ -77,7 +77,7 @@
                         1 programmatic tests</a></div>
             </h2>
             <br><br>
-            <% var bottomLine = !(tests_output.match(/\[Failed\]/g) || []).length; %>
+            <% var bottomLine = (tests_output.match(/\[Failed\]/g) || []).length; %>
             <div id="tests-bottom-line" class="<%- bottomLine === 0 ? "success" : "failure" %>">
                 <%- bottomLine === 0 ? "All tests passed" : bottomLine + " tests failed" %>
             </div>
