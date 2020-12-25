@@ -41,7 +41,7 @@ function updateTests(testType, cb) {
 }
 
 function runTests(stagingId, cb) {
-    exec("python3 ./test_runner.py", {timeout: 1000 * 20, cwd: "./ex02/staging/" + stagingId + "/"}, cb);
+    exec("python3 ./run_tests.py", {timeout: 1000 * 20, cwd: "./ex02/staging/" + stagingId + "/"}, cb);
 }
 
 function blockUnallowed(req, res, next) {
