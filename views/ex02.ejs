@@ -78,9 +78,10 @@
             </h2>
             <br><br>
             <% var bottomLine = (tests_output.match(/\[Failed\]/g) || []).length; %>
-            <div id="tests-bottom-line" class="<%- bottomLine === 0 ? "success" : "failure" %>">
-                <%- bottomLine === 0 ? "All tests passed" : bottomLine + " tests failed" %>
+            <div id="tests-bottom-line" class="text-center <%- bottomLine === 0 ? "success" : "failure" %>">
+                <%- bottomLine === 0 ? "All tests passed!" : bottomLine + " tests failed" %>
             </div>
+            <br>
             <div>
                 <%- tests_output.replace(/\n/g, "<br>").replace(/\[OK\]/g, "<span class='success'>[OK]</span>").replace(/\[Failed\]/g, "<span class='failure'>[Failed]</span>").replace(/\{STAGING_ID\}/g, stagingId) %>
             </div>
