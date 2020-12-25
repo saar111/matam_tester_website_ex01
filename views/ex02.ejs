@@ -79,7 +79,7 @@
             <br><br>
             <% var bottomLine = (tests_output.match(/\[Failed\]/g) || []).length; %>
             <h1 id="tests-bottom-line" class="text-center <%- bottomLine === 0 ? "success" : "failure" %>">
-                <%- bottomLine === 0 ? "All tests passed!" : bottomLine + " tests failed" %>
+                <%- bottomLine === 0 ? "Good job! All tests passed" : bottomLine + " tests failed" %>
             </h1>
             <br>
             <div>
