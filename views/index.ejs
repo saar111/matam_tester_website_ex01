@@ -65,11 +65,24 @@
             position: absolute;
             top: 10px;
             left: 10px;
+            font-weight: bold;
+            color: #17b217;
+            font-size: 26px;
+        }
+
+        #runners {
+            font-weight: bold;
+            color: red;
+            font-size: 26px;
         }
     </style>
 <body>
 <div id="test-count">
     <%- test_count + "tests run" %>
+    <div id="runners">
+        <%- "From " + runners + " unique names" %>
+    </div>
+
 </div>
 <div class="my-container">
     <div>
