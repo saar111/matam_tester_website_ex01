@@ -20,8 +20,8 @@ exports.setLocalsTestCount = function (req, res, next) {
 exports.add1ToTestCount = function (req, res, next) {
     MongoClient.connect("mongodb://localhost:27017/", {useNewUrlParser: true}, (err, client) => {
         getTestCounter((test_count) => {
-            let runners = test_count.runners;
-            runners.append(req.query.name);
+            let runners = test_count.runners || [];
+            runners.push(req.query.name);
             runners = Array.from(new Set(runners));
 
             let _db = client.db("test_counter");
