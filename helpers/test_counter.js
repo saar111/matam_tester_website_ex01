@@ -29,9 +29,9 @@ exports.add1ToTestCount = function (req, res, next) {
                 $inc: {"test_count": 1},
                 $set: {runners: runners}
             }, (err, test_count) => {
+                next();
             });
         });
 
-        next();
     });
 }
