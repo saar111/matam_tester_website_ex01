@@ -1,6 +1,5 @@
 const { MongoClient } = require("mongodb");
 const assert = require("assert");
-const config = require("../config.json");
 
 var _db;
 
