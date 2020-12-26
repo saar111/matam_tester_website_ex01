@@ -68,21 +68,23 @@
             font-weight: bold;
             color: #17b217;
             font-size: 26px;
+            border: 1px solid black;
+            padding: 5px 16px;
         }
 
         #runners {
             font-weight: bold;
-            color: red;
+            color: #4e7cc0;
             font-size: 26px;
         }
     </style>
 <body>
 <div id="test-count">
     <div>
-        <%- "Tests run: " + test_count %>
+        <%- "$ Tests run: " + test_count %>
     </div>
     <div id="runners">
-        <%- "From " + runners.length + " students" %>
+        <%- "$ From: " + runners.length + " students" %>
     </div>
 
 </div>
