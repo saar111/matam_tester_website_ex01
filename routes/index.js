@@ -3,6 +3,7 @@ var router = express.Router();
 var multer = require('multer');
 var fsExtra = require("fs-extra");
 var fs = require("fs");
+const tc = require("../helpers/test_counter");
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -206,7 +207,7 @@ function runTests(stagingId, cb) {
 }
 
 
-router.post('/ex01', createStagingFolder, upload.array('projectFiles'), function (req, res) {
+router.post('/ex01', tc.add1ToTestCount, tc.setLocalsTestCount, createStagingFolder, upload.array('projectFiles'), function (req, res) {
     let bannedNames = [];
     let bannedIps = [];
 
@@ -266,11 +267,11 @@ router.post('/ex01', createStagingFolder, upload.array('projectFiles'), function
     });
 });
 
-router.get('/ex01', function (req, res, next) {
+router.get('/ex01', tc.setLocalsTestCount, function (req, res, next) {
     res.render('ex01', {error: {}, output: [], testPath: "", stagingId: ""});
 });
 
-router.get("/", function(req, res) {
+router.get("/", tc.setLocalsTestCount, function(req, res) {
     res.render("index");
 })
 

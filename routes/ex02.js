@@ -3,6 +3,7 @@ var router = express.Router();
 var multer = require('multer');
 var fse = require("fs-extra");
 var fs = require("fs");
+const tc = require("../helpers/test_counter");
 const {exec} = require('child_process');
 
 var storage = multer.diskStorage({
@@ -68,7 +69,7 @@ function setupStagingArea(stagingId) {
     });
 }
 
-router.post('/', blockUnallowed, createStagingFolder, upload.array('projectFiles'), function (req, res) {
+router.post('/', tc.add1ToTestCount, tc.setLocalsTestCount, blockUnallowed, createStagingFolder, upload.array('projectFiles'), function (req, res) {
     let testType = req.body.testType;
     updateTests(testType, function () {
         setupStagingArea(req.stagingId);
@@ -82,7 +83,7 @@ router.post('/', blockUnallowed, createStagingFolder, upload.array('projectFiles
     });
 });
 
-router.get('/', function (req, res, next) {
+router.get('/', tc.setLocalsTestCount, function (req, res, next) {
     res.render('ex02');
 });
 

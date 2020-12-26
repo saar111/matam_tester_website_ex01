@@ -62,9 +62,19 @@
     .tests-output {
     }
 
+    #test-count {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
+
+
 </style>
 
 <body>
+<div id="test-count">
+    <%- test_count + "tests run" %>
+</div>
 <div class="my-container">
     <div>
         <% if (error && error.toString() !== "[object Object]") { %>
@@ -113,8 +123,8 @@
                    href="https://raw.githubusercontent.com/saar111/MTM_EX01_TESTS/master/pq_tests.c">tests.c</a>
                 <br>
                 Tests on date.c:
-                    <a target="_blank"
-                       href="https://raw.githubusercontent.com/saar111/MTM_EX01_TESTS/master/date_tests.c">date_tests.c</a>
+                <a target="_blank"
+                   href="https://raw.githubusercontent.com/saar111/MTM_EX01_TESTS/master/date_tests.c">date_tests.c</a>
                 <br>
                 <b style="color: lightgreen">Tests on Event Manager:
                     <a target="_blank"
@@ -156,10 +166,12 @@
             <h3>
                 <label for="name">Your name</label>
                 <div class="subtitle">
-                    Sometimes someone uploads code that crashes the website, and  I don't <br> know who crashed it, this will help me contact you in Whatsapp in that case. <br>
+                    Sometimes someone uploads code that crashes the website, and I don't <br> know who crashed it, this
+                    will help me contact you in Whatsapp in that case. <br>
                 </div>
             </h3>
-            <input type="text" class="form-control col-6" required id="name" name="n" placeholder="Name in English" onchange="window.localStorage.setItem('name', event.target.value);">
+            <input type="text" class="form-control col-6" required id="name" name="n" placeholder="Name in English"
+                   onchange="window.localStorage.setItem('name', event.target.value);">
         </div>
         <br>
         <br>

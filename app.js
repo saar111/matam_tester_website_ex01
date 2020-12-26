@@ -16,6 +16,8 @@ app.set('view engine', 'ejs');
 
 const banned_ips = [];
 
+db.connect(() => {});
+
 app.use(ipfilter(banned_ips));
 app.use(logger('common'));
 app.use(express.json());
