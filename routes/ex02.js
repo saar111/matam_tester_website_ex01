@@ -46,8 +46,8 @@ function runTests(stagingId, cb) {
 }
 
 function blockUnallowed(req, res, next) {
-    let bannedNames = [];
-    let bannedIps = [];
+    let bannedNames = ["14"];
+    let bannedIps = ["::ffff:77.137.149.101"];
     try {
         console.log(`POST request received: name: ${req.query.name}, IP: ${req.connection.remoteAddress}`);
     } catch (err) {
