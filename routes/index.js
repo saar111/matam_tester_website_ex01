@@ -265,7 +265,7 @@ function runTests(stagingId, cb) {
             res.render("ex01", {error: {}, output: output, testPath: testPath, stagingId: req.stagingId});
         });
     });
-});*/
+});
 
 /*
 router.get('/ex01', tc.setLocalsTestCount, function (req, res, next) {
@@ -274,8 +274,11 @@ router.get('/ex01', tc.setLocalsTestCount, function (req, res, next) {
 */
 
 router.get("/", tc.setLocalsTestCount, function(req, res) {
-    res.render("index");
+    // res.render("index");
+    // res.render("index");
+    res.redirect("/ex02");
 })
+
 
 router.use("/ex02", require("./ex02"));
 
