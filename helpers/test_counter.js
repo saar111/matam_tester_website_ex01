@@ -10,28 +10,38 @@ function getTestCounter(cb) {
 }
 
 exports.setLocalsTestCount = function (req, res, next) {
-    getTestCounter((test_count) => {
-        res.locals.test_count = test_count.test_count || 0;
-        res.locals.runners = test_count.runners || 0;
+    try {
+        getTestCounter((test_count) => {
+            res.locals.test_count = test_count.test_count || 0;
+            res.locals.runners = test_count.runners || 0;
+            next();
+        });
+    } catch (err) {
+        res.locals.test_count = 0;
+        res.locals.runners = 0;
         next();
-    });
+    }
 }
 
 exports.add1ToTestCount = function (req, res, next) {
-    MongoClient.connect("mongodb://localhost:27017/", {useNewUrlParser: true}, (err, client) => {
-        getTestCounter((test_count) => {
-            let runners = test_count.runners || [];
-            runners.push(req.query.name);
-            runners = Array.from(new Set(runners));
+    try {
+        MongoClient.connect("mongodb://localhost:27017/", {useNewUrlParser: true}, (err, client) => {
+            getTestCounter((test_count) => {
+                let runners = test_count.runners || [];
+                runners.push(req.query.name);
+                runners = Array.from(new Set(runners));
 
-            let _db = client.db("test_counter");
-            _db.collection("test_counter").updateOne({}, {
-                $inc: {"test_count": 1},
-                $set: {runners: runners}
-            }, (err, test_count) => {
-                next();
+                let _db = client.db("test_counter");
+                _db.collection("test_counter").updateOne({}, {
+                    $inc: {"test_count": 1},
+                    $set: {runners: runners}
+                }, (err, test_count) => {
+                    next();
+                });
             });
-        });
 
-    });
+        });
+    } catch (err) {
+        next();
+    }
 }
