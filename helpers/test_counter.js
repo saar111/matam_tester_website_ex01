@@ -26,19 +26,23 @@ exports.setLocalsTestCount = function (req, res, next) {
 exports.add1ToTestCount = function (req, res, next) {
     try {
         MongoClient.connect("mongodb://localhost:27017/", {useNewUrlParser: true}, (err, client) => {
-            getTestCounter((test_count) => {
-                let runners = test_count.runners || [];
-                runners.push(req.query.name);
-                runners = Array.from(new Set(runners));
+            try {
+                getTestCounter((test_count) => {
+                    let runners = test_count.runners || [];
+                    runners.push(req.query.name);
+                    runners = Array.from(new Set(runners));
 
-                let _db = client.db("test_counter");
-                _db.collection("test_counter").updateOne({}, {
-                    $inc: {"test_count": 1},
-                    $set: {runners: runners}
-                }, (err, test_count) => {
-                    next();
+                    let _db = client.db("test_counter");
+                    _db.collection("test_counter").updateOne({}, {
+                        $inc: {"test_count": 1},
+                        $set: {runners: runners}
+                    }, (err, test_count) => {
+                        next();
+                    });
                 });
-            });
+            } catch(err) {
+                next();
+            }
 
         });
     } catch (err) {
