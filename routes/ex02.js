@@ -41,8 +41,8 @@ function updateTests(testType, cb) {
     });
 }
 
-function runTests(stagingId, cb) {
-    exec("python3 ./run_tests.py", {timeout: 1000 * 20, cwd: "./ex02/staging/" + stagingId + "/"}, cb);
+function runTests(testType, stagingId, cb) {
+    exec("python3 ./run_tests.py " + testType, {timeout: 1000 * 20, cwd: "./ex02/staging/" + stagingId + "/"}, cb);
 }
 
 function blockUnallowed(req, res, next) {
@@ -73,7 +73,7 @@ router.post('/', tc.add1ToTestCount, tc.setLocalsTestCount, blockUnallowed, crea
     let testType = req.body.testType;
     updateTests(testType, function () {
         setupStagingArea(req.stagingId);
-        runTests(req.stagingId, function (err, stdout, stderr) {
+        runTests(testType, req.stagingId, function (err, stdout, stderr) {
             if (err || stderr) {
                 res.render("ex02", {tests_output: stdout, stagingId: req.stagingId, error: err || stderr});
             } else {
