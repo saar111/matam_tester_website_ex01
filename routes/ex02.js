@@ -42,6 +42,9 @@ function updateTests(testType, cb) {
 }
 
 function runTests(testType, stagingId, cb) {
+    if(testType !== "1" && testType !== "2") {
+        testType = "1";
+    }
     exec("python3 ./run_tests.py " + testType, {timeout: 1000 * 20, cwd: "./ex02/staging/" + stagingId + "/"}, cb);
 }
 
