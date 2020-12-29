@@ -3,10 +3,14 @@ const {MongoClient} = require("mongodb");
 function getTestCounter(cb) {
     try {
     MongoClient.connect("mongodb://localhost:27017/", {useNewUrlParser: true}, (err, client) => {
-        let _db = client.db("test_counter");
-        _db.collection("test_counter").findOne({}, null, (err, test_count) => {
-            cb(test_count);
-        });
+		try {
+			let _db = client.db("test_counter");
+			_db.collection("test_counter").findOne({}, null, (err, test_count) => {
+				cb(test_count);
+			});
+		} catch(err) {
+			cb({test_count: 0, runners: []});	
+		}
     });
     } catch (err) {
         cb({test_count: 0, runners: []});
