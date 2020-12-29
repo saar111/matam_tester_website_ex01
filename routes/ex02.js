@@ -64,10 +64,14 @@ function blockUnallowed(req, res, next) {
     }
 }
 
-function setupStagingArea(stagingId) {
+function setupStagingArea(testType, stagingId) {
     fse.copySync("ex02/tests", `ex02/staging/${stagingId}`, {
         filter: (src, dest) => {
-            return !src.includes(".git");
+            let res = !src.includes(".git");
+            if(testType == "2") {
+                res = res && !src.includes("_event_manager.so") && !src.includes("event_manager.py");
+            }
+            return res;
         }
     });
 }
@@ -75,7 +79,7 @@ function setupStagingArea(stagingId) {
 router.post('/', tc.add1ToTestCount, tc.setLocalsTestCount, blockUnallowed, createStagingFolder, upload.array('projectFiles'), function (req, res) {
     let testType = req.body.testType;
     updateTests(testType, function () {
-        setupStagingArea(req.stagingId);
+        setupStagingArea(testType, req.stagingId);
         runTests(testType, req.stagingId, function (err, stdout, stderr) {
             if (err || stderr) {
                 res.render("ex02", {tests_output: stdout, stagingId: req.stagingId, error: err || stderr});
