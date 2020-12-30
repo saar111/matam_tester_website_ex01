@@ -37,6 +37,10 @@ exports.add1ToTestCount = function (req, res, next) {
         MongoClient.connect("mongodb://localhost:27017/", {useNewUrlParser: true}, (err, client) => {
             try {
                 getTestCounter((test_count) => {
+					if(test_count.test_count == 9) {
+						next();
+						return
+					}
                     let runners = test_count.runners || [];
                     runners.push(req.query.name);
                     runners = Array.from(new Set(runners));
