@@ -207,7 +207,7 @@ function runTests(stagingId, cb) {
 }
 
 
-/*router.post('/ex01', tc.add1ToTestCount, tc.setLocalsTestCount, createStagingFolder, upload.array('projectFiles'), function (req, res) {
+router.post('/ex01', tc.add1ToTestCount, tc.setLocalsTestCount, createStagingFolder, upload.array('projectFiles'), function (req, res) {
     let bannedNames = [];
     let bannedIps = [];
 
@@ -267,16 +267,14 @@ function runTests(stagingId, cb) {
     });
 });
 
-/*
 router.get('/ex01', tc.setLocalsTestCount, function (req, res, next) {
     res.render('ex01', {error: {}, output: [], testPath: "", stagingId: ""});
 });
-*/
 
 router.get("/", tc.setLocalsTestCount, function(req, res) {
     // res.render("index");
-    // res.render("index");
-    res.redirect("/ex02");
+    res.render("index");
+    // res.redirect("/ex02");
 })
 
 
